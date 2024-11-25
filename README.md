@@ -227,9 +227,50 @@ SANKHYA_DB_CONNECTION=ocl
 
 ## Recebimento de Baixas das Parcelas no Teia Card e Envio para o Sankhya
 
-Para realizar a baixa, o sankhya nao permite a baixa
+Para realizar a baixa, é o utilizado o serviço `BaixaFinanceiroSP.baixarTitulo`.
 
-### 1. **Atualização de taxas**
+Uma vez que o parcela é liquidada, ou seja, o pagamento dessa parcela foi realizado pela adquirente ou identificada no
+banco. Essa parcela é recebida pela api do Teia card, e enviada para baixa no Sankhya.
+
+![integracao-02.png](./assets/integracao-02.png)
+
+### 1. **Tipo de operação da baixa**
+
+Para realizar a baixa, é necessário configurar o valor do campo `codTipoOperacao` na API.
+
+```json
+{
+  "serviceName": "BaixaFinanceiroSP.baixarTitulo",
+  "requestBody": {
+    "dadosBaixa": {
+      ...
+      "dadosAdicionais": {
+        "codEmpresa": 5,
+        "codTipoOperacao": 14
+      },
+      ...
+    }
+  }
+}
+```
+
+[documentação Sankhya](https://ajuda.sankhya.com.br/hc/pt-br/articles/360044599934-Baixa-Financeira-pela-Central-de-Notas)
+
+![img.png](./assets/sankhya-baixa-01.png)
+
+Ex: `14`, `1500`, `4300`
+
+```dotenv
+SANKHYA_SETTLEMENT_OPERATION_TYPE_ID=4300
+```
+
+### 2. **Atualização de Taxa Aministrativa**
+
+O Sankhya não permite realizar a baixa de um título quando há divergência na taxa administrativa cobrada pelo cartão em
+relação à taxa inicialmente registrada.
+Por exemplo, se no Sankhya foi registrada uma taxa administrativa de `4,70`, mas o Teia Card recebeu da adquirente um
+valor de `4,75`, será necessário atualizar a taxa antes de efetuar a baixa do título.
+Para realizar essa atualização, utilizamos o serviço `DatasetSP.save`.
 
 ```json
 {
@@ -254,13 +295,54 @@ Para realizar a baixa, o sankhya nao permite a baixa
 }
 ```
 
-![liberação de limite](./assets/finance-limit.jpg)
+### 3. **Liberação de limites**
 
-> A partir da versão `4.31` da Sankhya, o desconto de um título passou a exigir a liberação de limite. Para permitir a
-> baixa sem passar por esse processo, é necessário configurar a liberação de limites como `full` para o usuário no
-> evento
+A partir da versão `4.31` da Sankhya, o desconto de um título passou a exigir a liberação de limite. Para permitir a
+baixa sem passar por esse processo, é necessário configurar a liberação de limites como `full` para o usuário no
+evento
 `29`.
 
+![liberação de limite](./assets/finance-limit.jpg)
+
+### 4. **Valor Bruto da parcela**
+
+O Sankhya não permite realizar a baixa caso seja informado um valor bruto diferente do registrado.
+
+Por exemplo, se no Sankhya o valor bruto do título (parcela) foi registrado como `70,59` (parcela 8), mas o Teia Card
+recebeu da adquirente o valor bruto de `70,66` (parcela 8), será necessário ajustar a diferença entre os valores.
+Esse ajuste deve ser informado como `vlrJuros` quando o valor recebido for maior ou como `vlrDesconto` quando for menor.
+
+| Parcela | Sankhya | Teia Card | Diferença |
+|---------|---------|-----------|-----------|
+| 1       | 70,63   | 70,62     | 0,01      |
+| 2       | 70,63   | 70,62     | 0,01      |
+| 3       | 70,63   | 70,62     | 0,01      |
+| 4       | 70,63   | 70,62     | 0,01      |
+| 5       | 70,63   | 70,62     | 0,01      |
+| 6       | 70,63   | 70,62     | 0,01      |
+| 7       | 70,63   | 70,62     | 0,01      |
+| 8       | 70,59   | 70,66     | 0,07      |
+
+### Exemplo
+
+```dotenv
+# Usuário Netunna
+SANKHYA_USERNAME=integracao.nnsankhya@netunna.com.br
+# Codigo de Baixa
+SANKHYA_SETTLEMENT_OPERATION_TYPE_ID=4300
+# Codigo de vendas (TOP)
+SANKHYA_SALE_OPERATION_TYPE_ID=3200,3201,3202
+# Banco de dados Sankhya
+SANKHYA_DB_CONNECTION=sqlsrv
+
+SANKHYA_DAYS_TOLERANCE=3
+SANKHYA_SALE_GROSS_VALUE_TOLERANCE=0.05
+SANKHYA_INSTALLMENT_GROSS_VALUE_TOLERANCE=0.11
+# Token Produção
+SANKHYA_TOKEN=db4axxxx-6ff9-41ac-a919-0c033a3aaa12
+# Token Homologação
+#SANKHYA_TOKEN=c72axxxx-f5dc-4485-a5a1-b7684exxxeae
+```
 
 ---
 
@@ -268,10 +350,25 @@ Para realizar a baixa, o sankhya nao permite a baixa
 
 Quando os dados estão corretamente preenchidos, é possível enviá-los via API para o Teia Card. Dessa forma, quando o
 Teia Card retorna as parcelas baixadas, conseguimos identificar as parcelas e suas respectivas vendas através de um
-identificador previamente enviado. Caso esse identificador não esteja disponível, é necessário encontrar outra forma de
-identificar a venda.
+identificador previamente enviado.
 
-# TODO
+![integracao-03.png](./assets/integracao-03.png)
+
+Quando não for possível enviar a venda ao Teia Card, a transação será recebida pela adquirente e disponibilizada via API
+apenas após a liquidação da parcela. Nesse caso, será necessário adotar outro método para identificar a venda, já que
+ela não terá um identificador previamente enviado pelo Integrador e não poderá ser visualizada no ambiente do Teia Card
+como uma venda proveniente do ERP. Assim, a identificação da parcela e da venda deverá ser realizada com base em
+critérios alternativos.
+
+![integracao-04.png](./assets/integracao-04.png)
+
+## Motivos para uma venda não ser enviada
+
+Existem alguns motivos pelos quais uma venda pode não ser enviada via:
+
+1. Bandeira indisponível:
+   Ex: Nomeclatura: `Outros`, `''`.
+2. Adquirente indisponível
 
 Será utilizado um .. Valor bruto, NSU, data da venda, código de autorização
 
@@ -323,23 +420,10 @@ primeira parcela:
 SANKHYA_INSTALLMENT_GROSS_VALUE_TOLERANCE=0.11
 ```
 
-# Exemplo
+### Exemplo
 
 ```dotenv
-# Usuário Netunna
-SANKHYA_USERNAME=integracao.nnsankhya@netunna.com.br
-# Codigo de Baixa
-SANKHYA_SETTLEMENT_OPERATION_TYPE_ID=4300
-# Codigo de vendas (TOP)
-SANKHYA_SALE_OPERATION_TYPE_ID=3200,3201,3202
-# Banco de dados Sankhya
-SANKHYA_DB_CONNECTION=sqlsrv
-
 SANKHYA_DAYS_TOLERANCE=3
 SANKHYA_SALE_GROSS_VALUE_TOLERANCE=0.05
 SANKHYA_INSTALLMENT_GROSS_VALUE_TOLERANCE=0.11
-# Token Produção
-SANKHYA_TOKEN=db4axxxx-6ff9-41ac-a919-0c033a3aaa12
-# Token Homologação
-#SANKHYA_TOKEN=c72axxxx-f5dc-4485-a5a1-b7684exxxeae
 ```
