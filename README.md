@@ -137,7 +137,7 @@ SANKHYA_SALE_OPERATION_TYPE_ID=3200,3201,3202
 
 > Conhecido como TOP na Sankhya
 
-### 5. **Bandeiras**
+### 5. **Bandeiras** <a id="brand-list"></a>
 
 Abaixo está a descrição das bandeiras mapeadas e aceitas no Sankhya. No sistema Sankhya, a tabela que contém as
 informações das bandeiras é `"TEF"."BANDEIRA"`.
@@ -150,6 +150,7 @@ informações das bandeiras é `"TEF"."BANDEIRA"`.
 | AMEX             | 3         |
 | AMERICAN EXPRESS | 3         |
 | ELO              | 6         |
+| HIPER            | 4         |
 
 Para mais detalhes sobre as bandeiras permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Bandeira).
@@ -157,7 +158,7 @@ a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-
 
 > Variações de maíusculo e minusculo e acento das palavras são aceitas, Ex: `Visa`, `MasterCard`
 
-### 6. **Adquirentes**
+### 6. **Adquirentes** <a id="acquire-list"></a>
 
 Abaixo está a descrição das adquirentes mapeadas e aceitas no Sankhya. No sistema Sankhya, a coluna que contém o nome da
 adquirente é `"TGFTIT"."FISCAL"`.
@@ -173,7 +174,7 @@ a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-
 
 > Variações de maíusculo e minusculo e acento das palavras são aceitas, Ex: `RedeCard`, `Cielo`
 
-### 7. **Meio de Captura**
+### 7. **Meio de Captura** <a id="capture-method-list"></a>
 
 Para identificar o tipo de captura no Sankhya, é analisado o campo `TGFTIT.DESCRTIPTIT`.
 
@@ -191,7 +192,7 @@ Para identificar o tipo de captura no Sankhya, é analisado o campo `TGFTIT.DESC
 Para mais detalhes sobre os meios de captura no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-MeioCaptura).
 
-### 8. **Tipo de Serviço**
+### 8. **Tipo de Serviço** <a id="service-type-list"></a>
 
 Para identificar o tipo de serviço no Sankhya, é analisado o campo `TGFTIT.DESCRTIPTIT`.
 
@@ -362,20 +363,28 @@ critérios alternativos.
 
 ![integracao-04.png](./assets/integracao-04.png)
 
-## Motivos para uma venda não ser enviada
+## Motivos para uma venda não ser enviada ao Teia Card.
 
-Existem alguns motivos pelos quais uma venda pode não ser enviada via:
+Existem alguns motivos pelos quais uma venda pode não ser enviada:
 
-1. Bandeira indisponível:
-   Ex: Nomeclatura: `Outros`, `''`.
-2. Adquirente indisponível
+![integracao-05.png](./assets/integracao-05.png)
 
-Será utilizado um .. Valor bruto, NSU, data da venda, código de autorização
+1. Bandeira não permitida. [consulte a lista](#brand-list)
+2. Adquirente não permitida. [consulte a lista](#acquire-list)
+3. Tipo de Serviço não permitido. [consulte a lista](#service-type-list)
+4. Meio de captura não permitido. [consulte a lista](#capture-method-list)
+5. Nsu ausente.
 
-> Existem alguns motivos para não enviar a venda ao teia card, uma bandeira não identificada por exemplo com a
-> nomeclatura `Outros`
+## Critérios para encontrar uma venda não identificada previamente
 
-Para isso, são considerados os seguintes critérios de tolerância:
+Será utilizado um conjunto de informações essenciais para o processamento, incluindo: **valor bruto**, **NSU**, **data
+da venda** e **código de autorização**. Esses dados são fundamentais para identificar as transações analisadas.
+
+Para avaliar as transações, serão aplicados os seguintes critérios de tolerância, que determinam os limites aceitáveis
+para discrepâncias ou variações nos dados. Esses critérios permite que os processos atendam aos padrões definidos,
+facilitando a identificação de irregularidades.
+
+![integracao-06.png](./assets/integracao-06.png)
 
 ### 1. **Dias de tolerância**
 
