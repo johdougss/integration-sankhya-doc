@@ -236,16 +236,21 @@ dados para garantir que as consultas SQL sejam elaboradas de acordo com as neces
 SANKHYA_DB_CONNECTION=ocl
 ```
 
-## Recebimento de Baixas das Parcelas no Teia Card e Envio para o Sankhya
+### 10. **Captura das vendas**
+
+A captura das vendas ocorrerá uma vez por dia, com base na data de criação do registro. Esse processo de captura será
+realizado no dia seguinte à criação do registro, ou seja, em D-1.
+
+Uma vez que a venda é capturada, quaisquer
+atualizações subsequentes feitas na venda não serão refletidas na captura realizada, mantendo o estado do registro
+conforme estava no momento da captura. Dessa forma, é importante garantir que os dados estejam completos e corretos
+antes da captura, pois alterações posteriores não serão consideradas.
+
+## Recebimento de Baixas das Parcelas do Teia Card e Envio para o Sankhya
 
 ![integracao_01-b](./assets/integracao-01-b.png)
 
 Para realizar a baixa, é o utilizado o serviço `BaixaFinanceiroSP.baixarTitulo` via API Sankhya.
-
-Uma vez que o parcela é liquidada, ou seja, o pagamento dessa parcela foi realizado pela adquirente ou identificada no
-banco. Essa parcela é recebida via API do Teia card, e enviada via API para baixa no Sankhya.
-
-![integracao-02.png](./assets/integracao-02.png)
 
 Exemplo:
 
@@ -294,6 +299,11 @@ data = {
 }
 
 ```
+
+Assim que a parcela é liquidada — ou seja, quando o pagamento é realizado pela adquirente ou identificado no banco,
+ela é recebida via API do Teia Card e, em seguida, enviada via API para baixa no Sankhya.
+
+![integracao-02.png](./assets/integracao-02.png)
 
 ### 1. **Tipo de operação da baixa**
 
@@ -419,9 +429,18 @@ Quando não for possível enviar a venda ao Teia Card, a transação será receb
 apenas após a liquidação da parcela. Nesse cenário, será necessário adotar métodos alternativos para identificar a
 venda, já que ela não terá um identificador previamente enviado pelo Integrador.
 
-> Esse processo deve ser utilizado apenas como último recurso. É essencial priorizar a correção dos problemas que
-> impedem o envio adequado das vendas, garantindo que o fluxo padrão seja mantido e evitando a necessidade de
-> identificação manual ou baseada em critérios alternativos.
+## Uso do Processo como Último Recurso
+
+Esse processo deve ser utilizado apenas como último recurso. É essencial priorizar a correção dos problemas que
+impedem o envio adequado das vendas, garantindo que o fluxo padrão seja mantido e evitando a necessidade de
+identificação manual ou baseada em critérios alternativos.
+
+O não envio das vendas ao Teia Card inviabiliza a comparação precisa com os dados fornecidos pela adquirente, o que
+reduz a eficácia na identificação de divergências entre os sistemas. Isso aumenta o risco de discrepâncias não
+detectadas, que podem ser cobradas a mais pela adquirente. Caso o cliente perceba uma cobrança indevida, com base nas
+informações do ERP, ele pode solicitar o reembolso de todo o valor pago a mais. Isso demonstra que a ferramenta cumpriu
+seu papel ao permitir a identificação desses problemas, proporcionando ao cliente a oportunidade de recuperar valores
+cobrados indevidamente, o que é um benefício significativo.
 
 ![integracao-03.png](./assets/integracao-03.png)
 
