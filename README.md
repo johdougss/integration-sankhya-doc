@@ -5,6 +5,8 @@
 Esta integração permite sincronizar informações financeiras entre os sistemas **Teia Card** e **Sankhya**, garantindo um
 fluxo contínuo e consistente de dados. Abaixo estão descritas as duas principais funcionalidades dessa integração:
 
+![integracao_01](./assets/integracao-01.png)
+
 ## Envio de Vendas e Parcelas para o Teia Card
 
 - **Objetivo**: Capturar e transferir do Sankhya para o Teia Card informações sobre vendas e suas parcelas.
@@ -358,8 +360,8 @@ evento
 O Sankhya não permite realizar a baixa caso seja informado um valor bruto diferente do registrado.
 
 Por exemplo, se no Sankhya o valor bruto do título (parcela) foi registrado como `70,59` (parcela 8), mas o Teia Card
-recebeu da adquirente o valor bruto de `70,66` (parcela 8), será necessário ajustar a diferença entre os valores.
-Esse ajuste deve ser informado como `vlrJuros` quando o valor recebido for maior ou como `vlrDesconto` quando for menor.
+recebeu da adquirente o valor bruto de `70,66` (parcela 8), existe um a diferença entre os valores.
+Essa diferença será informada como `vlrJuros` quando o valor recebido for maior ou como `vlrDesconto` quando for menor.
 
 | Parcela | Sankhya | Teia Card | Diferença |
 |---------|---------|-----------|-----------|
