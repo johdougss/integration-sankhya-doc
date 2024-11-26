@@ -437,7 +437,7 @@ venda, já que ela não terá um identificador previamente enviado pelo Integrad
 
 ![integracao-03.png](./assets/integracao-03.png)
 
-## Uso do Processo como Último Recurso
+## Identificação alternativa como Último Recurso
 
 Esse processo deve ser utilizado apenas como último recurso. É essencial priorizar a correção dos problemas que
 impedem o envio adequado das vendas, garantindo que o fluxo padrão seja mantido e evitando a necessidade de
