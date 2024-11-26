@@ -425,9 +425,17 @@ identificador previamente enviado.
 
 ![integracao-02.png](./assets/integracao-02.png)
 
+Quando os dados da venda são enviados, é possível compará-los com as informações fornecidas pela adquirente. Essa
+comparação permite identificar divergências entre os dois conjuntos de dados, garantindo maior precisão no controle e na
+validação das transações realizadas.
+
+![integracao-06-a.png](./assets/integracao-06-a.png)
+
 Quando não for possível enviar a venda ao Teia Card, a transação será recebida pela adquirente e disponibilizada via API
 apenas após a liquidação da parcela. Nesse cenário, será necessário adotar métodos alternativos para identificar a
 venda, já que ela não terá um identificador previamente enviado pelo Integrador.
+
+![integracao-03.png](./assets/integracao-03.png)
 
 ## Uso do Processo como Último Recurso
 
@@ -436,13 +444,15 @@ impedem o envio adequado das vendas, garantindo que o fluxo padrão seja mantido
 identificação manual ou baseada em critérios alternativos.
 
 O não envio das vendas ao Teia Card inviabiliza a comparação precisa com os dados fornecidos pela adquirente, o que
-reduz a eficácia na identificação de divergências entre os sistemas. Isso aumenta o risco de discrepâncias não
+reduz a eficácia na identificação de divergências entre os sistemas.
+
+![integracao-06-b.png](./assets/integracao-06-b.png)
+
+Isso aumenta o risco de discrepâncias não
 detectadas, que podem ser cobradas a mais pela adquirente. Caso o cliente perceba uma cobrança indevida, com base nas
 informações do ERP, ele pode solicitar o reembolso de todo o valor pago a mais. Isso demonstra que a ferramenta cumpriu
 seu papel ao permitir a identificação desses problemas, proporcionando ao cliente a oportunidade de recuperar valores
 cobrados indevidamente, o que é um benefício significativo.
-
-![integracao-03.png](./assets/integracao-03.png)
 
 ## Motivos para uma venda não ser enviada ao Teia Card.
 
