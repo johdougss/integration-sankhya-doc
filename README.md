@@ -228,28 +228,76 @@ SANKHYA_DB_CONNECTION=ocl
 
 ## Recebimento de Baixas das Parcelas no Teia Card e Envio para o Sankhya
 
-Para realizar a baixa, é o utilizado o serviço `BaixaFinanceiroSP.baixarTitulo`.
+Para realizar a baixa, é o utilizado o serviço `BaixaFinanceiroSP.baixarTitulo` via API Sankhya.
 
 Uma vez que o parcela é liquidada, ou seja, o pagamento dessa parcela foi realizado pela adquirente ou identificada no
-banco. Essa parcela é recebida pela api do Teia card, e enviada para baixa no Sankhya.
+banco. Essa parcela é recebida via API do Teia card, e enviada via API para baixa no Sankhya.
 
 ![integracao-02.png](./assets/integracao-02.png)
+
+Exemplo: 
+
+```js
+data = {
+  "serviceName": "BaixaFinanceiroSP.baixarTitulo",
+  "requestBody": {
+    "dadosBaixa": {
+      "dtbaixa": "02/11/2024",
+      "nufin": 274376,
+      //...
+      "valoresBaixa": {
+        "tipoJuros": "I",
+        "tipoMulta": "I",
+        "taxaAdm": 2.48,
+        "vlrDesconto": 0,
+        "vlrCalculado": 105.85,
+        "vlrDesdob": 108.33,
+        "vlrDespesasCartorio": 0,
+        "vlrJuros": 0,
+        "vlrMulta": 0,
+        "vlrTotal": 105.85,
+        "vlrMultaNeg": 0,
+        "vlrJurosNeg": 0,
+        "jurosLib": 0,
+        "multaLib": 0,
+        "vlrMoeda": 0,
+        "vlrVarCambial": 0
+      },
+      "dadosBancarios": {
+        "codConta": 13,
+        "codLancamento": 1,
+        "numDocumento": 664,
+        "codTipTit": 61,
+        "vlrMoedaBaixa": 0,
+        "contaParaCaixaAberto": 0,
+        "historico": "Sk9BTw=="
+      },
+      "dadosAdicionais": {
+        "codEmpresa": 3,
+        "codTipoOperacao": 1500
+      },
+      //...
+    }
+  }
+}
+
+```
 
 ### 1. **Tipo de operação da baixa**
 
 Para realizar a baixa, é necessário configurar o valor do campo `codTipoOperacao` na API.
 
-```json
-{
+```js
+data = {
   "serviceName": "BaixaFinanceiroSP.baixarTitulo",
   "requestBody": {
     "dadosBaixa": {
-      ...
+      //...
       "dadosAdicionais": {
         "codEmpresa": 5,
         "codTipoOperacao": 14
       },
-      ...
+     // ...
     }
   }
 }
@@ -353,7 +401,7 @@ Quando os dados estão corretamente preenchidos, é possível enviá-los via API
 Teia Card retorna as parcelas baixadas, conseguimos identificar as parcelas e suas respectivas vendas através de um
 identificador previamente enviado.
 
-![integracao-03.png](./assets/integracao-03.png)
+![integracao-02.png](./assets/integracao-02.png)
 
 Quando não for possível enviar a venda ao Teia Card, a transação será recebida pela adquirente e disponibilizada via API
 apenas após a liquidação da parcela. Nesse caso, será necessário adotar outro método para identificar a venda, já que
@@ -361,13 +409,13 @@ ela não terá um identificador previamente enviado pelo Integrador e não poder
 como uma venda proveniente do ERP. Assim, a identificação da parcela e da venda deverá ser realizada com base em
 critérios alternativos.
 
-![integracao-04.png](./assets/integracao-04.png)
+![integracao-03.png](./assets/integracao-03.png)
 
 ## Motivos para uma venda não ser enviada ao Teia Card.
 
 Existem alguns motivos pelos quais uma venda pode não ser enviada:
 
-![integracao-05.png](./assets/integracao-05.png)
+![integracao-04.png](./assets/integracao-04.png)
 
 1. Bandeira não permitida. [consulte a lista](#brand-list)
 2. Adquirente não permitida. [consulte a lista](#acquire-list)
@@ -384,7 +432,7 @@ Para avaliar as transações, serão aplicados os seguintes critérios de toler�
 para discrepâncias ou variações nos dados. Esses critérios permite que os processos atendam aos padrões definidos,
 facilitando a identificação de irregularidades.
 
-![integracao-06.png](./assets/integracao-06.png)
+![integracao-05.png](./assets/integracao-05.png)
 
 ### 1. **Dias de tolerância**
 
@@ -399,6 +447,7 @@ SANKHYA_DAYS_TOLERANCE=3
 ### 2. **Tolerância de valor bruto da venda**
 
 Margem de tolerância no valor bruto da venda.
+
 > Exemplo: Em uma venda de 21,34 registrada na Sankhya, a adquirente informou o valor de 21,36. Como essa diferença
 > está dentro da tolerância definida, a venda seria reconhecida e conciliada corretamente.
 
@@ -410,6 +459,7 @@ SANKHYA_SALE_GROSS_VALUE_TOLERANCE=0.05
 
 Margem de tolerância no valor bruto da parcela. Em vendas parceladas em até 12x, os centavos são incluídos na
 primeira parcela:
+
 > Exemplo: Para uma venda de 565,00 dividida em 8 parcelas, a Sankhya e a adquirente aplicaram regras diferentes para
 > arredondamento dos centavos. Isso gerou uma pequena diferença de 0,07 centavos em uma das parcelas, causada pelas
 > variações nas regras de cálculo usadas por cada sistema.
