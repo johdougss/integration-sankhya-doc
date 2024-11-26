@@ -146,7 +146,7 @@ SANKHYA_SALE_OPERATION_TYPE_ID=3200,3201,3202
 ### 5. **Bandeiras** <a id="brand-list"></a>
 
 Abaixo está a descrição das bandeiras mapeadas e aceitas no Sankhya. No sistema Sankhya, a tabela que contém as
-informações das bandeiras é `"TEF"."BANDEIRA"`.
+informações das bandeiras é `TGFTEF.BANDEIRA`.
 
 | Sankhya          | Teia Card |
 |------------------|-----------|
@@ -178,14 +178,14 @@ adquirente é `"TGFTIT"."FISCAL"`.
 Para mais detalhes sobre as adquirentes permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Adquirente).
 
-> Variações de maíusculo e minusculo e acento das palavras são aceitas, Ex: `RedeCard`, `Cielo`
+> Variações de maíusculo e minúsculo e acento das palavras são aceitas, Ex: `RedeCard`, `Cielo`
 
 ### 7. **Meio de Captura** <a id="capture-method-list"></a>
 
 Para identificar o tipo de captura no Sankhya, é analisado o campo `TGFTIT.DESCRTIPTIT`.
 
 1. Por padrão é `PDV`
-2. Se no campo tiver a palavra `POS` será interpretado como `POS`.
+2. Se no campo conter a palavra `POS` será interpretado como `POS`.
 
 | Sankya `TGFTIT.DESCRTIPTIT`    | Teia Card |
 |--------------------------------|-----------|
