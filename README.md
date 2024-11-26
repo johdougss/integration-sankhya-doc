@@ -7,7 +7,9 @@ fluxo contínuo e consistente de dados. Abaixo estão descritas as duas principa
 
 ![integracao_01](./assets/integracao-01.png)
 
-## Envio de Vendas e Parcelas para o Teia Card
+## 1. Envio de Vendas e Parcelas para o Teia Card
+
+![integracao_01-a](./assets/integracao-01-a.png)
 
 - **Objetivo**: Capturar e transferir do Sankhya para o Teia Card informações sobre vendas e suas parcelas.
 - **Processo**:
@@ -23,7 +25,9 @@ Com a conclusão dessa etapa, o cliente poderá acompanhar as vendas diretamente
 divergências com as adquirentes. Isso facilitará o controle dos recebimentos e o monitoramento das vendas registradas no
 Sankhya, garantindo uma visão integrada e atualizada dos dados financeiros.
 
-## Recebimento de Baixas das Parcelas no Teia Card e Envio para o Sankhya
+## 2. Recebimento de Baixas das Parcelas no Teia Card e Envio para o Sankhya
+
+![integracao_01-b](./assets/integracao-01-b.png)
 
 - **Objetivo**: Registrar no Sankhya as baixas (pagamentos realizados) das parcelas conforme forem atualizadas no Teia
   Card.
@@ -54,7 +58,7 @@ adquirente ou banco.
 Para realizar o envio de dados de vendas e parcelas do Sankhya para o Teia Card, é necessário configurar o sistema de
 integração para acessar a API do Sankhya. Abaixo estão os passos e parâmetros de configuração necessários:
 
-![integracao_01](./assets/integracao-01.png)
+![integracao_01-a](./assets/integracao-01-a.png)
 
 ### 1. **Usuário de Acesso**
 
@@ -230,6 +234,8 @@ SANKHYA_DB_CONNECTION=ocl
 
 ## Recebimento de Baixas das Parcelas no Teia Card e Envio para o Sankhya
 
+![integracao_01-b](./assets/integracao-01-b.png)
+
 Para realizar a baixa, é o utilizado o serviço `BaixaFinanceiroSP.baixarTitulo` via API Sankhya.
 
 Uma vez que o parcela é liquidada, ou seja, o pagamento dessa parcela foi realizado pela adquirente ou identificada no
@@ -237,50 +243,50 @@ banco. Essa parcela é recebida via API do Teia card, e enviada via API para bai
 
 ![integracao-02.png](./assets/integracao-02.png)
 
-Exemplo: 
+Exemplo:
 
 ```js
 data = {
-  "serviceName": "BaixaFinanceiroSP.baixarTitulo",
-  "requestBody": {
-    "dadosBaixa": {
-      "dtbaixa": "02/11/2024",
-      "nufin": 274376,
-      //...
-      "valoresBaixa": {
-        "tipoJuros": "I",
-        "tipoMulta": "I",
-        "taxaAdm": 2.48,
-        "vlrDesconto": 0,
-        "vlrCalculado": 105.85,
-        "vlrDesdob": 108.33,
-        "vlrDespesasCartorio": 0,
-        "vlrJuros": 0,
-        "vlrMulta": 0,
-        "vlrTotal": 105.85,
-        "vlrMultaNeg": 0,
-        "vlrJurosNeg": 0,
-        "jurosLib": 0,
-        "multaLib": 0,
-        "vlrMoeda": 0,
-        "vlrVarCambial": 0
-      },
-      "dadosBancarios": {
-        "codConta": 13,
-        "codLancamento": 1,
-        "numDocumento": 664,
-        "codTipTit": 61,
-        "vlrMoedaBaixa": 0,
-        "contaParaCaixaAberto": 0,
-        "historico": "Sk9BTw=="
-      },
-      "dadosAdicionais": {
-        "codEmpresa": 3,
-        "codTipoOperacao": 1500
-      },
-      //...
+    "serviceName": "BaixaFinanceiroSP.baixarTitulo",
+    "requestBody": {
+        "dadosBaixa": {
+            "dtbaixa": "02/11/2024",
+            "nufin": 274376,
+            //...
+            "valoresBaixa": {
+                "tipoJuros": "I",
+                "tipoMulta": "I",
+                "taxaAdm": 2.48,
+                "vlrDesconto": 0,
+                "vlrCalculado": 105.85,
+                "vlrDesdob": 108.33,
+                "vlrDespesasCartorio": 0,
+                "vlrJuros": 0,
+                "vlrMulta": 0,
+                "vlrTotal": 105.85,
+                "vlrMultaNeg": 0,
+                "vlrJurosNeg": 0,
+                "jurosLib": 0,
+                "multaLib": 0,
+                "vlrMoeda": 0,
+                "vlrVarCambial": 0
+            },
+            "dadosBancarios": {
+                "codConta": 13,
+                "codLancamento": 1,
+                "numDocumento": 664,
+                "codTipTit": 61,
+                "vlrMoedaBaixa": 0,
+                "contaParaCaixaAberto": 0,
+                "historico": "Sk9BTw=="
+            },
+            "dadosAdicionais": {
+                "codEmpresa": 3,
+                "codTipoOperacao": 1500
+            },
+            //...
+        }
     }
-  }
 }
 
 ```
@@ -291,17 +297,17 @@ Para realizar a baixa, é necessário configurar o valor do campo `codTipoOperac
 
 ```js
 data = {
-  "serviceName": "BaixaFinanceiroSP.baixarTitulo",
-  "requestBody": {
-    "dadosBaixa": {
-      //...
-      "dadosAdicionais": {
-        "codEmpresa": 5,
-        "codTipoOperacao": 14
-      },
-     // ...
+    "serviceName": "BaixaFinanceiroSP.baixarTitulo",
+    "requestBody": {
+        "dadosBaixa": {
+            //...
+            "dadosAdicionais": {
+                "codEmpresa": 5,
+                "codTipoOperacao": 14
+            },
+            // ...
+        }
     }
-  }
 }
 ```
 
