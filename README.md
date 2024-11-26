@@ -25,7 +25,7 @@ Com a conclusão dessa etapa, o cliente poderá acompanhar as vendas diretamente
 divergências com as adquirentes. Isso facilitará o controle dos recebimentos e o monitoramento das vendas registradas no
 Sankhya, garantindo uma visão integrada e atualizada dos dados financeiros.
 
-## 2. Recebimento de Baixas das Parcelas no Teia Card e Envio para o Sankhya
+## 2. Recebimento de Baixas das Parcelas do Teia Card e Envio para o Sankhya
 
 ![integracao_01-b](./assets/integracao-01-b.png)
 
@@ -437,7 +437,7 @@ venda, já que ela não terá um identificador previamente enviado pelo Integrad
 
 ![integracao-03.png](./assets/integracao-03.png)
 
-## Identificação alternativa como Último Recurso
+## Identificação alternativa como último recurso
 
 Esse processo deve ser utilizado apenas como último recurso. É essencial priorizar a correção dos problemas que
 impedem o envio adequado das vendas, garantindo que o fluxo padrão seja mantido e evitando a necessidade de
@@ -473,7 +473,7 @@ da venda** e **código de autorização**. Esses dados são fundamentais para id
 
 Para avaliar as transações, serão aplicados os seguintes critérios de tolerância, que determinam os limites aceitáveis
 para discrepâncias ou variações nos dados. Esses critérios permite que os processos atendam aos padrões definidos,
-facilitando a identificação de irregularidades.
+facilitando a identificação.
 
 ![integracao-05.png](./assets/integracao-05.png)
 
