@@ -167,7 +167,7 @@ a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-
 ### 6. **Adquirentes** <a id="acquire-list"></a>
 
 Abaixo está a descrição das adquirentes mapeadas e aceitas no Sankhya. No sistema Sankhya, a coluna que contém o nome da
-adquirente é `"TGFTIT"."FISCAL"`.
+adquirente é `TGFTIT.FISCAL`.
 
 | Sankya   | Teia Card |  
 |----------|-----------|
@@ -412,10 +412,12 @@ identificador previamente enviado.
 ![integracao-02.png](./assets/integracao-02.png)
 
 Quando não for possível enviar a venda ao Teia Card, a transação será recebida pela adquirente e disponibilizada via API
-apenas após a liquidação da parcela. Nesse caso, será necessário adotar outro método para identificar a venda, já que
-ela não terá um identificador previamente enviado pelo Integrador e não poderá ser visualizada no ambiente do Teia Card
-como uma venda proveniente do ERP. Assim, a identificação da parcela e da venda deverá ser realizada com base em
-critérios alternativos.
+apenas após a liquidação da parcela. Nesse cenário, será necessário adotar métodos alternativos para identificar a
+venda, já que ela não terá um identificador previamente enviado pelo Integrador.
+
+> Esse processo deve ser utilizado apenas como último recurso. É essencial priorizar a correção dos problemas que
+> impedem o envio adequado das vendas, garantindo que o fluxo padrão seja mantido e evitando a necessidade de
+> identificação manual ou baseada em critérios alternativos.
 
 ![integracao-03.png](./assets/integracao-03.png)
 
