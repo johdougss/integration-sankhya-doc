@@ -202,10 +202,10 @@ a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-
 
 Para identificar o tipo de serviço no Sankhya, é analisado o campo `TGFTIT.DESCRTIPTIT`.
 
-1. Se no campo tiver a palavra `DEBITO` será interpretado como `DEBITO`.
-2. Se no campo tiver o texto `CREDITO`, `1X`,... ,`12X` será interpretado como `CREDITO`. Quando crédito será
+1. Se no campo conter a palavra `DEBITO` será interpretado como `DEBITO`.
+2. Se no campo conter as expressões `CREDITO`, `1X`,... ,`12X` será interpretado como `CREDITO`. Quando crédito será
    analisado o numero de parcelas, para enviar ao teia card a informação de `credito parcelado` ou
-   `credito a vista`.
+   `credito à vista`.
 
 | Sankya `TGFTIT.DESCRTIPTIT`    | N. Parcelas | Interpretado | Teia Card                    |
 |--------------------------------|-------------|--------------|------------------------------|
@@ -222,11 +222,15 @@ a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-
 
 ### 9. **Banco de dados**
 
-Existem clientes da Sankhya que utilizam bancos de dados Oracle e SQL Server. Portanto, é fundamental especificar o tipo
+Existem clientes da Sankhya que utilizam bancos de dados `Oracle` e `SQL Server`. Portanto, é fundamental especificar o
+tipo
 de banco de
 dados para garantir que as consultas SQL sejam elaboradas de acordo com as necessidades específicas de cada cliente
 
-`sqlsrv` (SQL Server) ou `ocl` (Oracle)
+| Nome       | Código |
+|------------|--------|
+| SQL Server | sqlsrv |
+| Oracle     | ocl    |
 
 ```dotenv
 SANKHYA_DB_CONNECTION=ocl
