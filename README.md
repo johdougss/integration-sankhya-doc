@@ -76,7 +76,12 @@ sankhya. [documentação sankhya](https://developer.sankhya.com.br/reference/api
 https://api.sankhya.com.br/login
 ```
 
-### Autenticação obsoleta
+#### Permissões concedidas
+
+Uma vez permitido, a empresa será listada nas permissões concedidas ao usuário.
+![sankhya-id-permissions.png](./assets/sankhya-id-permissions.png)
+
+#### Autenticação obsoleta
 
 A autenticação não será realizada por métodos alternativos que envolvem acesso direto à base de dados do cliente.
 
@@ -120,11 +125,6 @@ Portanto, não será necessário informar endereços URL, como, por exemplo:
 - `client-test.sankhyacloud.com.br/mge`
 - `client.sankhyacloud.com.br/mge`
 - `client.xx.ativy.com:30029`
-
-#### Permissões concedidas
-
-Uma vez permitido, a empresa será listada nas permissões concedidas ao usuário.
-![sankhya-id-permissions.png](./assets/sankhya-id-permissions.png)
 
 ### 2. **Token**
 
