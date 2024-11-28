@@ -62,13 +62,69 @@ integração para acessar a API do Sankhya. Abaixo estão os passos e parâmetro
 
 ### 1. **Usuário de Acesso**
 
-Primeiro, defina o usuário autorizado para a integração. Isso permite que o sistema de integração autentique e busque
-os
-dados necessários no Sankhya.
+Defina o usuário autorizado para a integração. Isso permite que o sistema de integração autentique e busque
+os dados necessários no Sankhya. Esse é um usuário [Sankhya ID](https://login.sankhya.com.br/).
 
 ```dotenv
 SANKHYA_USERNAME=integracao.nnsankhya@netunna.com.br
 ```
+
+A autenticação acontece através da API
+sankhya. [documentação sankhya](https://developer.sankhya.com.br/reference/api-de-integra%C3%A7%C3%B5es-sankhya)
+
+```text
+https://api.sankhya.com.br/login
+```
+
+### Autenticação obsoleta
+
+A autenticação não será realizada por métodos alternativos que envolvem acesso direto à base de dados do cliente.
+
+Por exemplo, usando `MobileLoginSP` e Cookie com `JSESSIONID`.
+
+```http request
+POST http://client.xx.ativy.com:50093/mge/service.sbr?serviceName=MobileLoginSP.login&outputType=json
+Content-Type: application/json
+
+{
+    "serviceName": "MobileLoginSP.login",
+    "requestBody": {
+        "NOMUSU": {
+            "$": "USUARIO 1"
+        },
+        "INTERNO":{
+            "$": "password1"
+        },
+        "KEEPCONNECTED": {
+            "$": "S"
+        }
+    }
+}
+```
+
+```http request
+GET http://client.xx.ativy.com:50092/mge/service.sbr?serviceName=DbExplorerSP.executeQuery&outputType=json
+Cookie: JSESSIONID=avvmuddfkuzNHdxwDhzddp0f8F52e13d4.master; path=/mge
+Content-Type: application/json
+
+{
+    "serviceName": "DbExplorerSP.executeQuery",
+    "requestBody": {
+        "sql": "SELECT * FROM TSIEMP EMP WHERE CODEMP=1"
+    }
+}
+```
+
+Portanto, não será necessário informar endereços URL, como, por exemplo:
+
+- `client-test.sankhyacloud.com.br/mge`
+- `client.sankhyacloud.com.br/mge`
+- `client.xx.ativy.com:30029`
+
+#### Permissões concedidas
+
+Uma vez permitido, a empresa será listada nas permissões concedidas ao usuário.
+![sankhya-id-permissions.png](./assets/sankhya-id-permissions.png)
 
 ### 2. **Token**
 
