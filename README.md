@@ -173,6 +173,7 @@ adquirente é `TGFTIT.FISCAL`.
 |----------|-----------|
 | CIELO    | 6         |
 | REDECARD | 18        |
+| REDE     | 18        |
 | STONE    | 24        |
 
 Para mais detalhes sobre as adquirentes permitidas no Teia Card, consulte
