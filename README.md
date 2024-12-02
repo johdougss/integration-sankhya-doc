@@ -231,6 +231,7 @@ adquirente é `TGFTIT.FISCAL`.
 | REDECARD | 18        |
 | REDE     | 18        |
 | STONE    | 24        |
+| PAGARME  | 39        |
 
 Para mais detalhes sobre as adquirentes permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Adquirente).
