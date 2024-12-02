@@ -305,6 +305,59 @@ atualizações subsequentes feitas na venda não serão refletidas na captura re
 conforme estava no momento da captura. Dessa forma, é importante garantir que os dados estejam completos e corretos
 antes da captura, pois alterações posteriores não serão consideradas.
 
+### 11. **Captura de Empresas e Lojas**
+
+Este guia apresenta os critérios e consultas necessários para capturar as empresas e suas respectivas lojas no sistema
+Sankhya. A seguir, são detalhados os passos para realizar essas operações de forma eficiente.
+
+#### **1. Captura das Empresas**
+
+No Sankhya, para ser considerada uma **empresa**, o valor de `CODEMPMATRIZ` deve ser igual ao de `CODEMP`. Ou seja, a
+matriz é identificada quando ela mesma é a sua própria matriz.
+
+##### **Consulta para buscar apenas empresas (matrizes):**
+
+```sql
+SELECT "EMP"."CODEMP",
+       "EMP"."RAZAOSOCIAL",
+       "EMP"."CGC",
+       "EMP"."CODEMPMATRIZ"
+FROM "TSIEMP" EMP
+WHERE "EMP"."CODEMP" = "EMP"."CODEMPMATRIZ";
+```
+
+##### **Exemplo de retorno:**
+
+```plaintext
+CODEMP        NAME                 NUMBER           CODEMPMATRIZ
+5             EMPRESA 1 LTDA       10491094000100   5
+```
+
+#### **2. Captura das Lojas**
+
+As lojas são identificadas pelo campo `CODEMPMATRIZ`, que aponta para o código da empresa matriz à qual elas pertencem.
+Para capturar todas as lojas de uma determinada empresa, basta utilizar o valor de `CODEMP` da matriz como filtro no
+campo `CODEMPMATRIZ`.
+
+##### **Consulta para buscar lojas de uma empresa específica:**
+
+```sql
+SELECT "EMP"."CODEMP",
+       "EMP"."RAZAOSOCIAL",
+       "EMP"."CGC",
+       "EMP"."CODEMPMATRIZ"
+FROM "TSIEMP" EMP
+WHERE "EMP"."CODEMPMATRIZ" = 5;
+```
+
+##### **Exemplo de retorno para `CODEMPMATRIZ = 5`:**
+
+```plaintext
+CODEMP        NAME                 NUMBER           CODEMPMATRIZ
+10            LOJA 1 LTDA          10491094000100   5
+22            LOJA 2 LTDA          10491094000100   5
+```
+
 ## Recebimento de Baixas das Parcelas do Teia Card e Envio para o Sankhya
 
 ![integracao_01-b](./assets/integracao-01-b.png)
