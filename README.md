@@ -213,6 +213,7 @@ informações das bandeiras é `TGFTEF.BANDEIRA`.
 | AMERICAN EXPRESS | 3         |
 | ELO              | 6         |
 | HIPER            | 4         |
+| HIPERCARD        | 4         |
 
 Para mais detalhes sobre as bandeiras permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Bandeira).
