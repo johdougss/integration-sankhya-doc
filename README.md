@@ -307,8 +307,7 @@ antes da captura, pois alterações posteriores não serão consideradas.
 
 ### 11. **Captura de Empresas e Lojas**
 
-Este guia apresenta os critérios e consultas necessários para capturar as empresas e suas respectivas lojas no sistema
-Sankhya. A seguir, são detalhados os passos para realizar essas operações de forma eficiente.
+Para capturar as empresas e suas respectivas lojas no sistema Sankhya.
 
 #### **1. Captura das Empresas**
 
@@ -354,8 +353,8 @@ WHERE "EMP"."CODEMPMATRIZ" = 5;
 
 ```plaintext
 CODEMP        NAME                 NUMBER           CODEMPMATRIZ
-10            LOJA 1 LTDA          10491094000100   5
-22            LOJA 2 LTDA          10491094000100   5
+10            LOJA 1 LTDA          10491094000101   5
+22            LOJA 2 LTDA          10491094000102   5
 ```
 
 ## Recebimento de Baixas das Parcelas do Teia Card e Envio para o Sankhya
