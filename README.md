@@ -142,29 +142,34 @@ autorização permite executar consultas SQL diretamente no sistema, possibilita
 parcelas.
 > "serviceName": "DbExplorerSP.executeQuery"
 
+![integracao-07.png](./assets/integracao-07.png)
+
 Exemplo de SQL:
 
 ```sql
--- consultar vendas 
+-- consulta os pedidos
 select t2.*
 from (select rownum AS "rn", t1.*
       from (select "TX".*
-            from (select "CAB"."NUNOTA",
-                         "CAB"."NUMNOTA",
-                         "CAB"."DTNEG",
-                         "CAB"."VLRNOTA",
-                         "TEF"."NUMNSU"
+            from (select "CAB"."NUNOTA"  as "ORDER_ID",
+                         "CAB"."NUMNOTA" as "ORDER_NUMBER",
+                         "CAB"."DTNEG"   as "DATE",
+                         "CAB"."VLRNOTA" as "GROSS_VALUE"
                   from "TGFCAB" CAB
-                           inner join "TGFFIN" FIN on "CAB"."NUNOTA" = "FIN"."NUNOTA"
-                           inner join "TGFTIT" TIT on "FIN"."CODTIPTIT" = "TIT"."CODTIPTIT"
-                           inner join "TGFTEF" TEF
-                                      on "TEF"."NUFIN" = "FIN"."NUFIN" and "TEF"."DESDOBRAMENTO" = "FIN"."DESDOBRAMENTO"
-                  where "CAB"."CODEMP" = 12
-                    and "CAB"."DTNEG" = TO_DATE('20240531', 'YYYYMMDD')
-                  group by "TEF"."NUMNSU", "CAB"."NUNOTA", "CAB"."NUMNOTA", "CAB"."DTNEG", "CAB"."VLRNOTA") TX) t1) t2
+                         inner join "TGFFIN" FIN on "CAB"."NUNOTA" = "FIN"."NUNOTA"
+                         inner join "TGFTIT" TIT on "FIN"."CODTIPTIT" = "TIT"."CODTIPTIT"
+                         inner join "TGFTEF" TEF
+                                    on "TEF"."NUFIN" = "FIN"."NUFIN" and "TEF"."DESDOBRAMENTO" = "FIN"."DESDOBRAMENTO"
+                  where "CAB"."CODEMP" = 1
+                    and "CAB"."DTNEG" = TO_DATE('20241101', 'YYYYMMDD')
+                    and "CAB"."CODTIPOPER" in (1100, 1102)
+                  group by "CAB"."NUNOTA", "CAB"."NUMNOTA", "CAB"."DTNEG", "CAB"."VLRNOTA") TX) t1) t2
 where t2."rn" between 1 and 2500
 
--- consultar parcelas 
+/**
+ * Recupera os titulos financeiros dos pedidos e agrupa por formas de pagamento, 
+ * formando as vendas e suas parcelas.
+ */
 select "CAB"."NUNOTA",
        "TEF"."NUMNSU",
        "TEF"."AUTORIZACAO",
