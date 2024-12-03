@@ -140,6 +140,7 @@ SANKHYA_TOKEN=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
 O sistema de integração precisa de autorização no serviço `DbExplorerSP`, disponível via API do Sankhya. Essa
 autorização permite executar consultas SQL diretamente no sistema, possibilitando a captura de dados de vendas e suas
 parcelas.
+
 > "serviceName": "DbExplorerSP.executeQuery"
 
 ![integracao-07.png](./assets/integracao-07.png)
