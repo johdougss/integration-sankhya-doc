@@ -143,7 +143,7 @@ parcelas.
 
 > "serviceName": "DbExplorerSP.executeQuery"
 
-![integracao-07.png](./assets/integracao-07.png)
+![integracao-07-a.png](./assets/integracao-07-a.png)
 
 Exemplo de SQL:
 
