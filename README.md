@@ -351,10 +351,9 @@ WHERE "EMP"."CODEMP" = "EMP"."CODEMPMATRIZ";
 
 ##### **Exemplo de retorno:**
 
-```plaintext
-CODEMP        NAME                 NUMBER           CODEMPMATRIZ
-5             EMPRESA 1 LTDA       10491094000100   5
-```
+| CODEMP | NAME           | NUMBER         | CODEMPMATRIZ |
+|--------|----------------|----------------|--------------|
+| 5      | EMPRESA 1 LTDA | 10491094000100 | 5            |
 
 #### **2. Captura das Lojas**
 
@@ -375,11 +374,10 @@ WHERE "EMP"."CODEMPMATRIZ" = 5;
 
 ##### **Exemplo de retorno para `CODEMPMATRIZ = 5`:**
 
-```plaintext
-CODEMP        NAME                 NUMBER           CODEMPMATRIZ
-10            LOJA 1 LTDA          10491094000101   5
-22            LOJA 2 LTDA          10491094000102   5
-```
+| CODEMP | NAME        | NUMBER         | CODEMPMATRIZ |
+|--------|-------------|----------------|--------------|
+| 10     | LOJA 1 LTDA | 10491094000101 | 5            |
+| 22     | LOJA 2 LTDA | 10491094000102 | 5            |
 
 ## Recebimento de Baixas das Parcelas do Teia Card e Envio para o Sankhya
 
