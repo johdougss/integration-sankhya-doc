@@ -270,18 +270,18 @@ No Sankhya, o campo `TGFTIT.SUBTIPOVENDA` é utilizado para identificar o tipo d
 - **`7`**: Representa **Cartão de Crédito**
 - **`8`**: Representa **Cartão de Débito**
 
-| **Sankhya `TGFTIT.SUBTIPOVENDA`** | **Nº de Parcelas** | **Teia Card**                |
-|-----------------------------------|--------------------|------------------------------|
-| **(7) Cartão de Crédito**         | 1                  | (1) Vendas crédito à vista   |
-| **(7) Cartão de Crédito**         | 3                  | (2) Vendas crédito parcelado |
-| **(8) Cartão de Débito**          | 1                  | (3) Débito à vista           |
+| Sankhya `TGFTIT.SUBTIPOVENDA` | Nº de Parcelas | Teia Card                    |
+|-------------------------------|----------------|------------------------------|
+| (7) Cartão de Crédito         | 1              | (1) Vendas crédito à vista   |
+| (7) Cartão de Crédito         | 3              | (2) Vendas crédito parcelado |
+| (8) Cartão de Débito          | 1              | (3) Débito à vista           |
 
 #### Cenário Alternativo: Campo `SUBTIPOVENDA` Vazio ou Inválido
 
 Caso o campo `TGFTIT.SUBTIPOVENDA` esteja vazio ou possua valores diferentes de `7` e `8`, utilizamos como alternativa o
 campo `TGFTIT.DESCRTIPTIT`. A interpretação segue as seguintes regras:
 
-1. Se o campo contiver a palavra `DÉBITO``, será interpretado como `Cartão de Débito`.
+1. Se o campo contiver a palavra `DÉBITO`, será interpretado como `Cartão de Débito`.
 2. Se o campo contiver as expressões `CRÉDITO`, `1X`, ..., `12X`, será interpretado como `Cartão de Crédito`.
 
 - Para transações de crédito, o número de parcelas determinará se será enviado como `crédito parcelado` ou `crédito à
@@ -289,15 +289,15 @@ campo `TGFTIT.DESCRTIPTIT`. A interpretação segue as seguintes regras:
 
 #### Mapeamento `DESCRTIPTIT` para o Teia Card
 
-| **Sankhya `TGFTIT.DESCRTIPTIT`** | **Nº de Parcelas** | **Interpretado**  | **Teia Card**                |
-|----------------------------------|--------------------|-------------------|------------------------------|
-| CARTÃO DE CRÉDITO                | 8                  | Cartão de Crédito | (1) Vendas crédito à vista   |
-| AMEX CRÉDITO 1X                  | 1                  | Cartão de Crédito | (1) Vendas crédito à vista   |
-| POS MASTERCARD/VISA/ELO 1X       | 1                  | Cartão de Crédito | (1) Vendas crédito à vista   |
-| MASTERCARD 2X A 6X               | 6                  | Cartão de Crédito | (2) Vendas crédito parcelado |
-| MASTERCARD/VISA/ELO 7X A 12X     | 7                  | Cartão de Crédito | (2) Vendas crédito parcelado |
-| CARTÃO DE DÉBITO                 | 1                  | Cartão de Débito  | (3) Débito à vista           |
-| ELO DÉBITO                       | 1                  | Cartão de Débito  | (3) Débito à vista           |
+| Sankhya `TGFTIT.DESCRTIPTIT` | Nº de Parcelas | Interpretado      | Teia Card                    |
+|------------------------------|----------------|-------------------|------------------------------|
+| CARTÃO DE CRÉDITO            | 8              | Cartão de Crédito | (1) Vendas crédito à vista   |
+| AMEX CRÉDITO 1X              | 1              | Cartão de Crédito | (1) Vendas crédito à vista   |
+| POS MASTERCARD/VISA/ELO 1X   | 1              | Cartão de Crédito | (1) Vendas crédito à vista   |
+| MASTERCARD 2X A 6X           | 6              | Cartão de Crédito | (2) Vendas crédito parcelado |
+| MASTERCARD/VISA/ELO 7X A 12X | 7              | Cartão de Crédito | (2) Vendas crédito parcelado |
+| CARTÃO DE DÉBITO             | 1              | Cartão de Débito  | (3) Débito à vista           |
+| ELO DÉBITO                   | 1              | Cartão de Débito  | (3) Débito à vista           |
 
 Para mais detalhes sobre os tipos de serviço no Teia Card,
 consulte a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-ServicoTipo)
