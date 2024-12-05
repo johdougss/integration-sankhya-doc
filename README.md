@@ -205,7 +205,7 @@ SANKHYA_SALE_OPERATION_TYPE_ID=3200,3201,3202
 
 > Conhecido como TOP na Sankhya
 
-### 5. **Bandeiras** <a id="brand-list"></a>
+### 5. **Bandeiras**<a id="brand-list"></a>
 
 Abaixo está a descrição das bandeiras mapeadas e aceitas no Sankhya. No sistema Sankhya, a tabela que contém as
 informações das bandeiras é `TGFTEF.BANDEIRA`.
@@ -227,7 +227,7 @@ a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-
 
 > Variações de maíusculo e minusculo e acento das palavras são aceitas, Ex: `Visa`, `MasterCard`
 
-### 6. **Adquirentes** <a id="acquire-list"></a>
+### 6. **Adquirentes**<a id="acquire-list"></a>
 
 Abaixo está a descrição das adquirentes mapeadas e aceitas no Sankhya. No sistema Sankhya, a coluna que contém o nome da
 adquirente é `TGFTIT.FISCAL`.
