@@ -245,7 +245,7 @@ a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-
 
 > Variações de maíusculo e minúsculo e acento das palavras são aceitas, Ex: `RedeCard`, `Cielo`
 
-### 7. **Meio de Captura** <a id="capture-method-list"></a>
+### 7. **Meio de Captura**<a id="capture-method-list"></a>
 
 Para identificar o tipo de captura no Sankhya, é analisado o campo `TGFTIT.DESCRTIPTIT`.
 
@@ -263,7 +263,7 @@ Para identificar o tipo de captura no Sankhya, é analisado o campo `TGFTIT.DESC
 Para mais detalhes sobre os meios de captura no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-MeioCaptura).
 
-### 8. **Tipo de Serviço** <a id="service-type-list"></a>
+### 8. **Tipo de Serviço**<a id="service-type-list"></a>
 
 No Sankhya, o campo `TGFTIT.SUBTIPOVENDA` é utilizado para identificar o tipo de titulo:
 
