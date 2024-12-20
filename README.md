@@ -207,7 +207,7 @@ SANKHYA_SALE_OPERATION_TYPE_ID=3200,3201,3202
 
 ### 5. **Bandeiras**<a id="brand-list"></a>
 
-#### Opção 1: 
+#### Opção 1:
 
 Abaixo está a descrição das bandeiras mapeadas e aceitas no Sankhya. No sistema Sankhya, a tabela que contém as
 informações das bandeiras é `TGFTEF.BANDEIRA`.
@@ -230,19 +230,21 @@ a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-
 
 > Variações de maíusculo e minusculo e acento das palavras são aceitas, Ex: `Visa`, `MasterCard`
 
-```shell
+```env
 BRAND_NAME_OPTION=1
 ```
 
-#### Opção 2: 
+#### Opção 2:
 
-Uma outra alternativa é recuperar o nome da bandeira da coluna `TGFTEF.NOMEREDE`. 
+Uma outra alternativa é recuperar o nome da bandeira da coluna `TGFTEF.NOMEREDE`.
 
-```shell
+```env
 BRAND_NAME_OPTION=2
 ```
 
 ### 6. **Adquirentes**<a id="acquire-list"></a>
+
+### Opção 1:
 
 Abaixo está a descrição das adquirentes mapeadas e aceitas no Sankhya. No sistema Sankhya, a coluna que contém o nome da
 adquirente é `TGFTIT.FISCAL`.
@@ -259,6 +261,29 @@ Para mais detalhes sobre as adquirentes permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Adquirente).
 
 > Variações de maíusculo e minúsculo e acento das palavras são aceitas, Ex: `RedeCard`, `Cielo`
+
+```env
+ACQUIRER_NAME_OPTION=1
+```
+
+### Opção 2:
+
+Uma alternativa é recuperar o nome da adquirente da coluna `TGFPAR.NOMEPARC`
+
+Ex:
+
+```sql 
+SELECT
+    ...
+    PAR.NOMEPARC AS ACQUIRER_NAME
+    ...
+    JOIN TGFPAR AS PAR
+ON TGFTIT.CODPARCTEF = PAR.CODPARC
+```
+
+```env
+ACQUIRER_NAME_OPTION=2
+```
 
 ### 7. **Meio de Captura**<a id="capture-method-list"></a>
 
