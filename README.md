@@ -207,25 +207,40 @@ SANKHYA_SALE_OPERATION_TYPE_ID=3200,3201,3202
 
 ### 5. **Bandeiras**<a id="brand-list"></a>
 
+#### Opção 1: 
+
 Abaixo está a descrição das bandeiras mapeadas e aceitas no Sankhya. No sistema Sankhya, a tabela que contém as
 informações das bandeiras é `TGFTEF.BANDEIRA`.
 
 | Sankhya          | Teia Card |
 |------------------|-----------|
-| MASTER           | 2         |
-| MASTERCARD       | 2         |
-| VISA             | 1         |
-| AMEX             | 3         |
 | AMERICAN EXPRESS | 3         |
+| AMEX             | 3         |
 | ELO              | 6         |
 | HIPER            | 4         |
 | HIPERCARD        | 4         |
+| MAESTRO          | 2         |
+| MASTER           | 2         |
+| MASTERCARD       | 2         |
+| VISA             | 1         |
 
 Para mais detalhes sobre as bandeiras permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Bandeira).
 
 
 > Variações de maíusculo e minusculo e acento das palavras são aceitas, Ex: `Visa`, `MasterCard`
+
+```shell
+BRAND_NAME_OPTION=1
+```
+
+#### Opção 2: 
+
+Uma outra alternativa é recuperar o nome da bandeira da coluna `TGFTEF.NOMEREDE`. 
+
+```shell
+BRAND_NAME_OPTION=2
+```
 
 ### 6. **Adquirentes**<a id="acquire-list"></a>
 
@@ -235,10 +250,10 @@ adquirente é `TGFTIT.FISCAL`.
 | Sankya   | Teia Card |  
 |----------|-----------|
 | CIELO    | 6         |
-| REDECARD | 18        |
-| REDE     | 18        |
-| STONE    | 24        |
 | PAGARME  | 39        |
+| REDE     | 18        |
+| REDECARD | 18        |
+| STONE    | 24        |
 
 Para mais detalhes sobre as adquirentes permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Adquirente).
