@@ -424,6 +424,13 @@ WHERE "EMP"."CODEMPMATRIZ" = 5;
 ![integracao_01-b](./assets/integracao-01-b.png)
 
 Para realizar a baixa, é o utilizado o serviço `BaixaFinanceiroSP.baixarTitulo` via API Sankhya.
+[documentação Sankhya](https://developer.sankhya.com.br/reference/mapeamento-de-servi%C3%A7o#lista-de-servi%C3%A7os-%C3%BAteis).
+
+```text
+Serviço: BaixaFinanceiroSP.baixarTitulo
+Tela: Movimentação Financeira
+Botão: Baixar
+```
 
 Exemplo:
 
@@ -702,3 +709,6 @@ SANKHYA_DAYS_TOLERANCE=3
 SANKHYA_SALE_GROSS_VALUE_TOLERANCE=0.05
 SANKHYA_INSTALLMENT_GROSS_VALUE_TOLERANCE=0.11
 ```
+
+# Sankhya Documentação
+
