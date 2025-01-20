@@ -148,6 +148,9 @@ parcelas.
 Exemplo de SQL:
 
 ```sql
+-- noinspection SqlNoDataSourceInspectionForFile
+-- noinspection SqlNoDataSourceInspection
+
 -- consulta os pedidos
 select t2.*
 from (select rownum AS "rn", t1.*
@@ -273,6 +276,8 @@ Uma alternativa é recuperar o nome da adquirente da coluna `TGFPAR.NOMEPARC`
 Ex:
 
 ```sql 
+-- noinspection SqlNoDataSourceInspectionForFile
+-- noinspection SqlNoDataSourceInspection
 SELECT
     ...
     PAR.NOMEPARC AS ACQUIRER_NAME
@@ -381,6 +386,9 @@ matriz é identificada quando ela mesma é a sua própria matriz.
 ##### **Consulta para buscar apenas empresas (matrizes):**
 
 ```sql
+-- noinspection SqlNoDataSourceInspectionForFile
+-- noinspection SqlNoDataSourceInspection
+
 SELECT "EMP"."CODEMP",
        "EMP"."RAZAOSOCIAL",
        "EMP"."CGC",
@@ -404,6 +412,9 @@ campo `CODEMPMATRIZ`.
 ##### **Consulta para buscar lojas de uma empresa específica:**
 
 ```sql
+-- noinspection SqlNoDataSourceInspectionForFile
+-- noinspection SqlNoDataSourceInspection
+
 SELECT "EMP"."CODEMP",
        "EMP"."RAZAOSOCIAL",
        "EMP"."CGC",
