@@ -149,7 +149,6 @@ Exemplo de SQL:
 
 ```sql
 -- noinspection SqlNoDataSourceInspectionForFile
--- noinspection SqlNoDataSourceInspection
 
 -- consulta os pedidos
 select t2.*
@@ -277,7 +276,7 @@ Ex:
 
 ```sql 
 -- noinspection SqlNoDataSourceInspectionForFile
--- noinspection SqlNoDataSourceInspection
+
 SELECT
     ...
     PAR.NOMEPARC AS ACQUIRER_NAME
@@ -387,7 +386,6 @@ matriz é identificada quando ela mesma é a sua própria matriz.
 
 ```sql
 -- noinspection SqlNoDataSourceInspectionForFile
--- noinspection SqlNoDataSourceInspection
 
 SELECT "EMP"."CODEMP",
        "EMP"."RAZAOSOCIAL",
@@ -413,7 +411,6 @@ campo `CODEMPMATRIZ`.
 
 ```sql
 -- noinspection SqlNoDataSourceInspectionForFile
--- noinspection SqlNoDataSourceInspection
 
 SELECT "EMP"."CODEMP",
        "EMP"."RAZAOSOCIAL",
@@ -720,6 +717,4 @@ SANKHYA_DAYS_TOLERANCE=3
 SANKHYA_SALE_GROSS_VALUE_TOLERANCE=0.05
 SANKHYA_INSTALLMENT_GROSS_VALUE_TOLERANCE=0.11
 ```
-
-# Sankhya Documentação
 
