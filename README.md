@@ -1,45 +1,58 @@
 # Descrição
 
-## Integração entre Teia Card e Sankhya
-
-Esta integração permite sincronizar informações financeiras entre os sistemas **Teia Card** e **Sankhya**, garantindo um
-fluxo contínuo e consistente de dados. Abaixo estão descritas as duas principais funcionalidades dessa integração:
+Esta integração permite sincronizar informações financeiras entre os sistemas Teia Card e Sankhya, garantindo um fluxo
+contínuo e consistente de dados. Abaixo estão descritas as principais funcionalidades dessa integração:
 
 ![integracao_01](./assets/integracao-01.png)
 
-## 1. Envio de Vendas e Parcelas para o Teia Card
+## Envio de Vendas e Parcelas para o Teia Card
 
 ![integracao_01-a](./assets/integracao-01-a.png)
 
-- **Objetivo**: Capturar e transferir do Sankhya para o Teia Card informações sobre vendas e suas parcelas.
-- **Processo**:
-    - O sistema de integração busca no Sankhya dados sobre vendas registradas e suas parcelas associadas.
-    - As informações incluem detalhes como valor da venda, número de parcelas, datas de vencimento e cliente.
-    - Esses dados são então enviados para o Teia Card, onde podem ser utilizados para monitorar recebimentos.
-- **Frequência**: A integração pode ser configurada para rodar periodicamente, garantindo que as informações no Teia
-  Card estejam sempre atualizadas com as vendas mais recentes do Sankhya. É configurada para rodar uma vez ao dia,
-  sempre com dados de `D-1`. Isso significa que as vendas e parcelas são buscadas no Sankhya e enviadas ao Teia Card com
-  informações referentes ao dia anterior.
+### Objetivo
+
+Capturar e transferir do Sankhya para o Teia Card informações sobre vendas e suas parcelas.
+
+### Processo
+
+O sistema de integração busca no Sankhya dados sobre vendas registradas e suas parcelas associadas.
+As informações incluem detalhes como valor da venda, número de parcelas, datas de vencimento e cliente. Esses dados são
+enviados para o Teia Card, onde podem ser utilizados para controlar recebimentos e verificar
+divergências.
+
+### Frequência
+
+A integração pode ser configurada para rodar periodicamente, garantindo que as informações no Teia
+Card estejam sempre atualizadas com as vendas mais recentes do Sankhya. É configurada para rodar uma vez ao dia,
+sempre com dados de `D-1`. Isso significa que as vendas e parcelas são buscadas no Sankhya e enviadas ao Teia Card com
+informações referentes ao dia anterior.
 
 Com a conclusão dessa etapa, o cliente poderá acompanhar as vendas diretamente no Teia Card e verificar eventuais
 divergências com as adquirentes. Isso facilitará o controle dos recebimentos e o monitoramento das vendas registradas no
 Sankhya, garantindo uma visão integrada e atualizada dos dados financeiros.
 
-## 2. Recebimento de Baixas das Parcelas do Teia Card e Envio para o Sankhya
+## Recebimento de Baixas das Parcelas do Teia Card e Envio para o Sankhya
 
 ![integracao_01-b](./assets/integracao-01-b.png)
 
-- **Objetivo**: Registrar no Sankhya as baixas (pagamentos realizados) das parcelas conforme forem atualizadas no Teia
-  Card.
-- **Processo**:
-    - O sistema de integração verifica no Teia Card as baixas das parcelas, identificando quais foram efetivamente
-      pagas.
-    - Essas informações incluem identificador da parcela, data de pagamento e valor pago.
-    - O sistema então envia esses dados de baixa para o Sankhya, atualizando o status das parcelas como pagas.
-- **Frequência**: As baixas das parcelas registradas no Teia Card também são enviadas ao Sankhya com dados de D-1,
-  mantendo ambos os sistemas sincronizados com atualizações diárias.
+### Objetivo
 
-Ao concluir essa etapa, o cliente poderá visualizar, no Sankhya, todas as vendas que foram efetivamente pagas pela
+Registrar no Sankhya as baixas (pagamentos realizados) das parcelas conforme forem atualizadas no Teia
+Card.
+
+### Processo
+
+O sistema de integração verifica no Teia Card as baixas das parcelas, identificando quais foram efetivamente
+pagas. Essas informações incluem identificador da parcela, data de pagamento e valor pago. O sistema então envia esses
+dados de baixa para o Sankhya, atualizando o status das parcelas como pagas.
+
+### Frequência
+
+As baixas das parcelas registradas no Teia Card também são enviadas ao Sankhya com dados de `D-1`,
+mantendo ambos os sistemas sincronizados com atualizações diárias.
+
+Ao concluir essa etapa, o cliente poderá visualizar,
+no Sankhya, todas as vendas que foram efetivamente pagas pela
 adquirente ou banco.
 
 ## Benefícios da Integração
@@ -60,26 +73,95 @@ integração para acessar a API do Sankhya. Abaixo estão os passos e parâmetro
 
 ![integracao_01-a](./assets/integracao-01-a.png)
 
-### 1. **Usuário de Acesso**
+### Guia para Geração de Tokens de Produção e Sandbox na Sankhya
 
-Defina o usuário autorizado para a integração. Isso permite que o sistema de integração autentique e busque
-os dados necessários no Sankhya. Esse é um usuário [Sankhya ID](https://login.sankhya.com.br/).
+#### 1. Geração do Token de Produção
 
+**API de Serviços Gateway**
+
+Para integrar com a Sankhya, é necessário gerar um token de produção. Consulte
+a [Documentação Sankhya](https://developer.sankhya.com.br/reference/api-de-integra%C3%A7%C3%B5es-sankhya) para obter
+mais detalhes sobre a API de integrações.
+
+**Configuração do Gateway**
+
+Acesse
+a [Documentação Sankhya](https://ajuda.sankhya.com.br/hc/pt-br/articles/10007620733463-Configura%C3%A7%C3%B5es-Gateway)
+para configurar o Gateway.
+
+**Passo a Passo:**
+
+##### **Acesse o Menu `Configurações Gateway`**
+
+![img.png](./assets/img.png)
+
+##### **Configure um Gateway**
+
+- Configure um nome para a integração, por exemplo: `Netunna`.
+- Clique no botão "Adicionar" para vincular uma aplicação.
+
+![img_1.png](./assets/img_1.png)
+
+##### **Vincule uma Aplicação**
+
+- Clique em "Buscar Aplicação".
+- Nome da Aplicação: `Netunna`.
+- Fornecedor: `NETUNNA SOFTWARE LTDA`.
+
+![img_2.png](./assets/img_2.png)
+
+##### **Crie um Novo Usuário**
+
+1. Acesse o menu "Usuários".
+2. Crie um novo usuário:
+
+> **Observação:** Os dados desse usuário não precisam ser compartilhados, pois ele NÃO será utilizado para
+> autenticação
+> via API. Sua criação serve apenas para vincular a aplicação ao Gateway e gerar o token de acesso
+
+| Campo           | Valor               |
+|-----------------|---------------------|
+| Nome            | Netunna             |
+| Senha           | ****                |
+| Grupo           | 0 \<SEM GRUPO>      |
+| Empresa         | 1 \<Empresa Matriz> |
+| Tipo de Usuário | Integração          |
+
+![img_4.png](./assets/img_4.png)
+
+##### **Vincule o Usuário ao Gateway**
+
+- Retorne à configuração do Gateway e vincule o usuário criado.
+- Salve o procedimento e o token será gerado automaticamente.
+
+Ex: 
 ```dotenv
-SANKHYA_USERNAME=integracao.nnsankhya@netunna.com.br
+SANKHYA_TOKEN=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
 ```
 
-A autenticação acontece através da API
-sankhya. [documentação sankhya](https://developer.sankhya.com.br/reference/api-de-integra%C3%A7%C3%B5es-sankhya)
+![img_3.png](./assets/img_3.png)
 
-```text
-https://api.sankhya.com.br/login
-```
+#### 2. Geração do Token de Sandbox
 
-#### Permissões concedidas
+Para criar o token de `Sandbox`, o procedimento é o mesmo descrito para o token de `Produção`. No entanto, é
+importante destacar um alerta:
 
-Uma vez permitido, a empresa será listada nas permissões concedidas ao usuário.
-![sankhya-id-permissions.png](./assets/sankhya-id-permissions.png)
+Alguns clientes possuem um servidor com uma instância adicional do Sankhya, que pode ser chamada de `sandbox`, `teste`,
+`homologação` ou `cópia de produção`. Nesses casos, a `APPKEY` utilizada será a de `Produção`, e a autenticação deverá
+ser feita através da URL `https://api.sankhya.com.br/login`.
+
+Isso significa que, mesmo em um ambiente de testes, a `APPKEY` de produção será usada para autenticação, enquanto a URL
+de acesso permanece a mesma. Certifique-se de seguir o mesmo processo de geração do token, adaptando apenas o ambiente
+conforme necessário.
+
+**A partir de 1º de outubro de 2024**, a Sankhya disponibilizou um ambiente de `sandbox` dedicado. Consulte
+a [Documentação Sankhya](https://developer.sankhya.com.br/reference/appkey-de-sandbox) para mais informações. Esse
+ambiente permite o uso de um `APPKEY` de `Sandbox` para autenticação, que deve ser realizada através da URL
+`https://api.sandbox.sankhya.com.br/login`.
+
+Portanto, ao fornecer os tokens de **Produção** e **Sandbox**, informe-nos se a autenticação deve ser realizada com a
+nossa `APPKEY` de **Produção** ou de **Sandbox**. Isso nos ajudará a garantir que a integração seja configurada
+corretamente para o ambiente desejado.
 
 #### Autenticação obsoleta
 
@@ -126,15 +208,6 @@ Portanto, não será necessário informar endereços URL, como, por exemplo:
 - `client.sankhyacloud.com.br/mge`
 - `client.xx.ativy.com:30029`
 
-### 2. **Token**
-
-Para acessar a API, configure o token de autenticação para o ambiente correto (homologação ou produção). Este token
-autoriza o sistema a se comunicar com a API do Sankhya.
-
-```dotenv
-SANKHYA_TOKEN=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
-```
-
 ### 3. **Autorização do DbExplorer**
 
 O sistema de integração precisa de autorização no serviço `DbExplorerSP`, disponível via API do Sankhya. Essa
@@ -173,23 +246,25 @@ where t2."rn" between 1 and 2500
  * Recupera os titulos financeiros dos pedidos e agrupa por formas de pagamento, 
  * formando as vendas e suas parcelas.
  */
-select "CAB"."NUNOTA",
-       "TEF"."NUMNSU",
-       "TEF"."AUTORIZACAO",
-       "TEF"."BANDEIRA",
-       "TEF"."NUFIN",
-       "TEF"."VLRTRANSACAO",
-       "TIT"."CODTIPTIT",
-       "TIT"."DESCRTIPTIT",
-       "TIT"."FISCAL",
-       "FIN"."CODPARC",
-       "FIN"."DESDOBRAMENTO",
-       "FIN"."DTVENC"
+select "CAB"."NUNOTA"        as "ORDER_ID",
+       "TIT"."FISCAL"        as "ACQUIRER_NAME",
+       "TEF"."BANDEIRA"      as "BRAND_NAME",
+       "TEF"."NUMNSU"        as "NSU",
+       "TEF"."AUTORIZACAO"   as "AUTHORIZATION_CODE",
+       "TEF"."NUFIN"         as "INSTALLMENT_ID",
+       "TEF"."VLRTRANSACAO"  as "GROSS_VALUE",
+       "TIT"."CODTIPTIT"     as "PAYMENT_METHOD_ID",
+       "TIT"."DESCRTIPTIT"   as "PAYMENT_METHOD_NAME",
+       "TIT"."SUBTIPOVENDA"  as "PAYMENT_METHOD_TYPE",
+       "FIN"."CODPARC"       as "PARTNER_ID",
+       "FIN"."DESDOBRAMENTO" as "UNFOLDING",
+       "FIN"."DTVENC"        as "PAYMENT_FORECAST",
+       "FIN"."CARTAODESC"    as "COMMISSION_VALUE"
 from "TGFCAB" CAB
          inner join "TGFFIN" FIN on "CAB"."NUNOTA" = "FIN"."NUNOTA"
          inner join "TGFTIT" TIT on "FIN"."CODTIPTIT" = "TIT"."CODTIPTIT"
          inner join "TGFTEF" TEF on "TEF"."NUFIN" = "FIN"."NUFIN" and "TEF"."DESDOBRAMENTO" = "FIN"."DESDOBRAMENTO"
-where "CAB"."NUNOTA" in (76018, 76028)
+where "CAB"."NUNOTA" in (68684)
 ```
 
 > Nao é possivel realizar a mesma consulta usando o serviço `LoadRecord`.
