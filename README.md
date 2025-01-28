@@ -134,7 +134,8 @@ para configurar o Gateway.
 - Retorne à configuração do Gateway e vincule o usuário criado.
 - Salve o procedimento e o token será gerado automaticamente.
 
-Ex: 
+Ex:
+
 ```dotenv
 SANKHYA_TOKEN=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
 ```
@@ -213,6 +214,18 @@ Portanto, não será necessário informar endereços URL, como, por exemplo:
 O sistema de integração precisa de autorização no serviço `DbExplorerSP`, disponível via API do Sankhya. Essa
 autorização permite executar consultas SQL diretamente no sistema, possibilitando a captura de dados de vendas e suas
 parcelas.
+
+Pesquise por `Acessos`:
+
+![dbexplorer-acessos.png](./assets/dbexplorer-acessos.png)
+
+Selecine o modulo: `DbExplorer`:
+
+![dbexplorer-modulo.png](./assets/dbexplorer-modulo.png)
+
+Selecione o usuário criado na geração do token, selecione todas as permissões e clique no botão `Finalizar`;
+
+![dbexplorer-permissao.png](./assets/dbexplorer-permissao.png)
 
 > "serviceName": "DbExplorerSP.executeQuery"
 
@@ -505,6 +518,23 @@ WHERE "EMP"."CODEMPMATRIZ" = 5;
 ## Recebimento de Baixas das Parcelas do Teia Card e Envio para o Sankhya
 
 ![integracao_01-b](./assets/integracao-01-b.png)
+
+
+
+## Permissões para o usuário
+
+É necessário conceder permissões ao usuário criado na integração
+
+Pesquise por `Acesso`, depois selecione o módulo `Movimentação Financeira`
+
+![financeiro-modulo.png](./assets/financeiro-modulo.png)
+
+Selecione o usuário criado na integração, ex: `Netunna`, selecione as permissões e clique em `Finalizar`
+
+![financeiro-permissoes.png](./assets/financeiro-permissoes.png)
+
+
+## Serviço Baixa FinanceiroSP (Baixar Titulo)
 
 Para realizar a baixa, é o utilizado o serviço `BaixaFinanceiroSP.baixarTitulo` via API Sankhya.
 [documentação Sankhya](https://developer.sankhya.com.br/reference/mapeamento-de-servi%C3%A7o#lista-de-servi%C3%A7os-%C3%BAteis).
