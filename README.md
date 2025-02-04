@@ -231,56 +231,6 @@ Selecione o usuário criado na geração do token, selecione todas as permissõe
 
 ![integracao-07-a.png](./assets/integracao-07-a.png)
 
-Exemplo de SQL:
-
-```sql
--- noinspection SqlNoDataSourceInspectionForFile
-
--- consulta os pedidos
-select t2.*
-from (select rownum AS "rn", t1.*
-      from (select "TX".*
-            from (select "CAB"."NUNOTA"  as "ORDER_ID",
-                         "CAB"."NUMNOTA" as "ORDER_NUMBER",
-                         "CAB"."DTNEG"   as "DATE",
-                         "CAB"."VLRNOTA" as "GROSS_VALUE"
-                  from "TGFCAB" CAB
-                           inner join "TGFFIN" FIN on "CAB"."NUNOTA" = "FIN"."NUNOTA"
-                           inner join "TGFTIT" TIT on "FIN"."CODTIPTIT" = "TIT"."CODTIPTIT"
-                           inner join "TGFTEF" TEF
-                                      on "TEF"."NUFIN" = "FIN"."NUFIN" and "TEF"."DESDOBRAMENTO" = "FIN"."DESDOBRAMENTO"
-                  where "CAB"."CODEMP" = 1
-                    and "CAB"."DTNEG" = TO_DATE('20241101', 'YYYYMMDD')
-                    and "CAB"."CODTIPOPER" in (1100, 1102)
-                  group by "CAB"."NUNOTA", "CAB"."NUMNOTA", "CAB"."DTNEG", "CAB"."VLRNOTA") TX) t1) t2
-where t2."rn" between 1 and 2500
-
-/**
- * Recupera os titulos financeiros dos pedidos e agrupa por formas de pagamento, 
- * formando as vendas e suas parcelas.
- */
-select "CAB"."NUNOTA"        as "ORDER_ID",
-       "TIT"."FISCAL"        as "ACQUIRER_NAME",
-       "TEF"."BANDEIRA"      as "BRAND_NAME",
-       "TEF"."NUMNSU"        as "NSU",
-       "TEF"."AUTORIZACAO"   as "AUTHORIZATION_CODE",
-       "TEF"."NUFIN"         as "INSTALLMENT_ID",
-       "TEF"."VLRTRANSACAO"  as "GROSS_VALUE",
-       "TIT"."CODTIPTIT"     as "PAYMENT_METHOD_ID",
-       "TIT"."DESCRTIPTIT"   as "PAYMENT_METHOD_NAME",
-       "TIT"."SUBTIPOVENDA"  as "PAYMENT_METHOD_TYPE",
-       "FIN"."CODPARC"       as "PARTNER_ID",
-       "FIN"."DESDOBRAMENTO" as "UNFOLDING",
-       "FIN"."DTVENC"        as "PAYMENT_FORECAST",
-       "FIN"."CARTAODESC"    as "COMMISSION_VALUE"
-from "TGFCAB" CAB
-         inner join "TGFFIN" FIN on "CAB"."NUNOTA" = "FIN"."NUNOTA"
-         inner join "TGFTIT" TIT on "FIN"."CODTIPTIT" = "TIT"."CODTIPTIT"
-         inner join "TGFTEF" TEF on "TEF"."NUFIN" = "FIN"."NUFIN" and "TEF"."DESDOBRAMENTO" = "FIN"."DESDOBRAMENTO"
-where "CAB"."NUNOTA" in (68684)
-```
-
-> Nao é possivel realizar a mesma consulta usando o serviço `LoadRecord`.
 
 ### 4. **Buscar somente vendas.**
 
@@ -460,6 +410,123 @@ Uma vez que a venda é capturada, quaisquer
 atualizações subsequentes feitas na venda não serão refletidas na captura realizada, mantendo o estado do registro
 conforme estava no momento da captura. Dessa forma, é importante garantir que os dados estejam completos e corretos
 antes da captura, pois alterações posteriores não serão consideradas.
+
+#### Sql para captura das vendas e parcelas
+
+Exemplo de SQL (Oracle):
+
+```sql
+-- noinspection SqlNoDataSourceInspectionForFile
+
+-- consulta os pedidos
+select t2.*
+from (select rownum AS "rn", t1.*
+      from (select "TX".*
+            from (select "CAB"."NUNOTA"  as "ORDER_ID",
+                         "CAB"."NUMNOTA" as "ORDER_NUMBER",
+                         "CAB"."DTNEG"   as "DATE",
+                         "CAB"."VLRNOTA" as "GROSS_VALUE"
+                  from "TGFCAB" CAB
+                           inner join "TGFFIN" FIN on "CAB"."NUNOTA" = "FIN"."NUNOTA"
+                           inner join "TGFTIT" TIT on "FIN"."CODTIPTIT" = "TIT"."CODTIPTIT"
+                           inner join "TGFTEF" TEF
+                                      on "TEF"."NUFIN" = "FIN"."NUFIN" and "TEF"."DESDOBRAMENTO" = "FIN"."DESDOBRAMENTO"
+                  where "CAB"."CODEMP" = 1
+                    and "CAB"."DTNEG" = TO_DATE('20241101', 'YYYYMMDD')
+                    and "CAB"."CODTIPOPER" in (1100, 1102)
+                  group by "CAB"."NUNOTA", "CAB"."NUMNOTA", "CAB"."DTNEG", "CAB"."VLRNOTA") TX) t1) t2
+where t2."rn" between 1 and 2500
+
+-- Recupera os títulos financeiros dos pedidos e agrupa por formas de pagamento, formando as vendas e suas parcelas
+select "CAB"."NUNOTA"        as "ORDER_ID",
+       "TIT"."FISCAL"        as "ACQUIRER_NAME",
+       "TEF"."BANDEIRA"      as "BRAND_NAME",
+       "TEF"."NUMNSU"        as "NSU",
+       "TEF"."AUTORIZACAO"   as "AUTHORIZATION_CODE",
+       "TEF"."NUFIN"         as "INSTALLMENT_ID",
+       "TEF"."VLRTRANSACAO"  as "GROSS_VALUE",
+       "TIT"."CODTIPTIT"     as "PAYMENT_METHOD_ID",
+       "TIT"."DESCRTIPTIT"   as "PAYMENT_METHOD_NAME",
+       "TIT"."SUBTIPOVENDA"  as "PAYMENT_METHOD_TYPE",
+       "FIN"."CODPARC"       as "PARTNER_ID",
+       "FIN"."DESDOBRAMENTO" as "UNFOLDING",
+       "FIN"."DTVENC"        as "PAYMENT_FORECAST",
+       "FIN"."CARTAODESC"    as "COMMISSION_VALUE"
+from "TGFCAB" CAB
+         inner join "TGFFIN" FIN on "CAB"."NUNOTA" = "FIN"."NUNOTA"
+         inner join "TGFTIT" TIT on "FIN"."CODTIPTIT" = "TIT"."CODTIPTIT"
+         inner join "TGFTEF" TEF on "TEF"."NUFIN" = "FIN"."NUFIN" and "TEF"."DESDOBRAMENTO" = "FIN"."DESDOBRAMENTO"
+where "CAB"."NUNOTA" in (68684)
+```
+
+
+Exemplo de SQL (Sql Server):
+
+```sql
+-- noinspection SqlNoDataSourceInspectionForFile
+
+-- Consulta os pedidos
+SELECT TOP 2500 [TX].*
+FROM (
+  SELECT
+  [CAB].[NUNOTA] AS [ORDER_ID],
+  [CAB].[NUMNOTA] AS [ORDER_NUMBER],
+  [CAB].[DTNEG] AS [DATE],
+  [CAB].[VLRNOTA] AS [GROSS_VALUE]
+  FROM
+  [TGFCAB] AS [CAB]
+  INNER JOIN
+  [TGFFIN] AS [FIN] ON [CAB].[NUNOTA] = [FIN].[NUNOTA]
+  INNER JOIN
+  [TGFTIT] AS [TIT] ON [FIN].[CODTIPTIT] = [TIT].[CODTIPTIT]
+  INNER JOIN
+  [TGFTEF] AS [TEF] ON [TEF].[NUFIN] = [FIN].[NUFIN]
+  AND [TEF].[DESDOBRAMENTO] = [FIN].[DESDOBRAMENTO]
+  WHERE
+  [CAB].[CODEMP] = 1
+  AND [CAB].[DTNEG] = '20250201'
+  AND [CAB].[CODTIPOPER] IN (
+  3200, 3201, 3202, 3203, 3206, 3208, 3209, 3220, 3230
+  )
+  GROUP BY
+  [CAB].[NUNOTA],
+  [CAB].[NUMNOTA],
+  [CAB].[DTNEG],
+  [CAB].[VLRNOTA]
+  ) AS [TX];
+
+-- Recupera os títulos financeiros dos pedidos e agrupa por formas de pagamento, formando as vendas e suas parcelas
+SELECT
+  [TEF].[BANDEIRA] AS [BRAND_NAME],
+  [TIT].[FISCAL] AS [ACQUIRER_NAME],
+  [CAB].[NUNOTA] AS [ORDER_ID],
+  [TEF].[NUMNSU] AS [NSU],
+  [TEF].[AUTORIZACAO] AS [AUTHORIZATION_CODE],
+  [TEF].[NUFIN] AS [INSTALLMENT_ID],
+  [TEF].[VLRTRANSACAO] AS [GROSS_VALUE],
+  [TIT].[CODTIPTIT] AS [PAYMENT_METHOD_ID],
+  [TIT].[DESCRTIPTIT] AS [PAYMENT_METHOD_NAME],
+  [TIT].[SUBTIPOVENDA] AS [PAYMENT_METHOD_TYPE],
+  [FIN].[CODPARC] AS [PARTNER_ID],
+  [FIN].[DESDOBRAMENTO] AS [UNFOLDING],
+  [FIN].[DTVENC] AS [PAYMENT_FORECAST],
+  [FIN].[CARTAODESC] AS [COMMISSION_VALUE]
+FROM
+  [TGFCAB] AS [CAB]
+  INNER JOIN
+  [TGFFIN] AS [FIN] ON [CAB].[NUNOTA] = [FIN].[NUNOTA]
+  INNER JOIN
+  [TGFTIT] AS [TIT] ON [FIN].[CODTIPTIT] = [TIT].[CODTIPTIT]
+  INNER JOIN
+  [TGFTEF] AS [TEF] ON [TEF].[NUFIN] = [FIN].[NUFIN]
+  AND [TEF].[DESDOBRAMENTO] = [FIN].[DESDOBRAMENTO]
+WHERE
+    [CAB].[NUNOTA] IN (1, 2, 3);
+
+```
+
+> Nao é possivel realizar a mesma consulta usando o serviço `LoadRecord`.
+
 
 ### 11. **Captura de Empresas e Lojas**
 
