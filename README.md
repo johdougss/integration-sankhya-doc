@@ -373,7 +373,7 @@ campo `TGFTIT.DESCRTIPTIT`. A interpretação segue as seguintes regras:
 
 | Sankhya `TGFTIT.DESCRTIPTIT` | Nº de Parcelas | Interpretado      | Teia Card                    |
 |------------------------------|----------------|-------------------|------------------------------|
-| CARTÃO DE CRÉDITO            | 8              | Cartão de Crédito | (1) Vendas crédito à vista   |
+| CARTÃO DE CRÉDITO            | 8              | Cartão de Crédito | (1) Vendas crédito parcelado |
 | AMEX CRÉDITO 1X              | 1              | Cartão de Crédito | (1) Vendas crédito à vista   |
 | POS MASTERCARD/VISA/ELO 1X   | 1              | Cartão de Crédito | (1) Vendas crédito à vista   |
 | MASTERCARD 2X A 6X           | 6              | Cartão de Crédito | (2) Vendas crédito parcelado |
