@@ -231,7 +231,6 @@ Selecione o usuário criado na geração do token, selecione todas as permissõe
 
 ![integracao-07-a.png](./assets/integracao-07-a.png)
 
-
 ### 4. **Buscar somente vendas.**
 
 Alguns clientes Sankhya utilizam a tabela `TGFCAB` para armazenar dados que não estão diretamente relacionados a
@@ -263,6 +262,7 @@ informações das bandeiras é `TGFTEF.BANDEIRA`.
 | MASTER           | 2         |
 | MASTERCARD       | 2         |
 | VISA             | 1         |
+| ELECTRON         | 1         |
 
 Para mais detalhes sobre as bandeiras permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Bandeira).
@@ -296,6 +296,7 @@ adquirente é `TGFTIT.FISCAL`.
 | REDE     | 18        |
 | REDECARD | 18        |
 | STONE    | 24        |
+| SICREDI  | 42        |
 
 Para mais detalhes sobre as adquirentes permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Adquirente).
@@ -459,7 +460,6 @@ from "TGFCAB" CAB
 where "CAB"."NUNOTA" in (68684)
 ```
 
-
 Exemplo de SQL (Sql Server):
 
 ```sql
@@ -468,65 +468,48 @@ Exemplo de SQL (Sql Server):
 -- Consulta os pedidos
 SELECT TOP 2500 [TX].*
 FROM (
-  SELECT
-  [CAB].[NUNOTA] AS [ORDER_ID],
-  [CAB].[NUMNOTA] AS [ORDER_NUMBER],
-  [CAB].[DTNEG] AS [DATE],
-  [CAB].[VLRNOTA] AS [GROSS_VALUE]
-  FROM
-  [TGFCAB] AS [CAB]
-  INNER JOIN
-  [TGFFIN] AS [FIN] ON [CAB].[NUNOTA] = [FIN].[NUNOTA]
-  INNER JOIN
-  [TGFTIT] AS [TIT] ON [FIN].[CODTIPTIT] = [TIT].[CODTIPTIT]
-  INNER JOIN
-  [TGFTEF] AS [TEF] ON [TEF].[NUFIN] = [FIN].[NUFIN]
-  AND [TEF].[DESDOBRAMENTO] = [FIN].[DESDOBRAMENTO]
-  WHERE
-  [CAB].[CODEMP] = 1
-  AND [CAB].[DTNEG] = '20250201'
-  AND [CAB].[CODTIPOPER] IN (
-  3200, 3201, 3202, 3203, 3206, 3208, 3209, 3220, 3230
-  )
-  GROUP BY
-  [CAB].[NUNOTA],
-  [CAB].[NUMNOTA],
-  [CAB].[DTNEG],
-  [CAB].[VLRNOTA]
-  ) AS [TX];
+    SELECT
+    [CAB].[NUNOTA] AS [ORDER_ID], [CAB].[NUMNOTA] AS [ORDER_NUMBER], [CAB].[DTNEG] AS [DATE], [CAB].[VLRNOTA] AS [GROSS_VALUE]
+    FROM
+    [TGFCAB] AS [CAB]
+    INNER JOIN
+    [TGFFIN] AS [FIN] ON [CAB].[NUNOTA] = [FIN].[NUNOTA]
+    INNER JOIN
+    [TGFTIT] AS [TIT] ON [FIN].[CODTIPTIT] = [TIT].[CODTIPTIT]
+    INNER JOIN
+    [TGFTEF] AS [TEF] ON [TEF].[NUFIN] = [FIN].[NUFIN]
+    AND [TEF].[DESDOBRAMENTO] = [FIN].[DESDOBRAMENTO]
+    WHERE
+    [CAB].[CODEMP] = 1
+    AND [CAB].[DTNEG] = '20250201'
+    AND [CAB].[CODTIPOPER] IN (
+    3200, 3201, 3202, 3203, 3206, 3208, 3209, 3220, 3230
+    )
+    GROUP BY
+    [CAB].[NUNOTA], [CAB].[NUMNOTA], [CAB].[DTNEG], [CAB].[VLRNOTA]
+    ) AS [TX];
 
 -- Recupera os títulos financeiros dos pedidos e agrupa por formas de pagamento, formando as vendas e suas parcelas
 SELECT
-  [TEF].[BANDEIRA] AS [BRAND_NAME],
-  [TIT].[FISCAL] AS [ACQUIRER_NAME],
-  [CAB].[NUNOTA] AS [ORDER_ID],
-  [TEF].[NUMNSU] AS [NSU],
-  [TEF].[AUTORIZACAO] AS [AUTHORIZATION_CODE],
-  [TEF].[NUFIN] AS [INSTALLMENT_ID],
-  [TEF].[VLRTRANSACAO] AS [GROSS_VALUE],
-  [TIT].[CODTIPTIT] AS [PAYMENT_METHOD_ID],
-  [TIT].[DESCRTIPTIT] AS [PAYMENT_METHOD_NAME],
-  [TIT].[SUBTIPOVENDA] AS [PAYMENT_METHOD_TYPE],
-  [FIN].[CODPARC] AS [PARTNER_ID],
-  [FIN].[DESDOBRAMENTO] AS [UNFOLDING],
-  [FIN].[DTVENC] AS [PAYMENT_FORECAST],
-  [FIN].[CARTAODESC] AS [COMMISSION_VALUE]
+    [TEF].[BANDEIRA] AS [BRAND_NAME], [TIT].[FISCAL] AS [ACQUIRER_NAME], [CAB].[NUNOTA] AS [ORDER_ID], [TEF].[NUMNSU] AS [NSU], [TEF].[AUTORIZACAO] AS [AUTHORIZATION_CODE], [TEF].[NUFIN] AS [INSTALLMENT_ID], [TEF].[VLRTRANSACAO] AS [GROSS_VALUE], [TIT].[CODTIPTIT] AS [PAYMENT_METHOD_ID], [TIT].[DESCRTIPTIT] AS [PAYMENT_METHOD_NAME], [TIT].[SUBTIPOVENDA] AS [PAYMENT_METHOD_TYPE], [FIN].[CODPARC] AS [PARTNER_ID], [FIN].[DESDOBRAMENTO] AS [UNFOLDING], [FIN].[DTVENC] AS [PAYMENT_FORECAST], [FIN].[CARTAODESC] AS [COMMISSION_VALUE]
 FROM
-  [TGFCAB] AS [CAB]
-  INNER JOIN
-  [TGFFIN] AS [FIN] ON [CAB].[NUNOTA] = [FIN].[NUNOTA]
-  INNER JOIN
-  [TGFTIT] AS [TIT] ON [FIN].[CODTIPTIT] = [TIT].[CODTIPTIT]
-  INNER JOIN
-  [TGFTEF] AS [TEF] ON [TEF].[NUFIN] = [FIN].[NUFIN]
-  AND [TEF].[DESDOBRAMENTO] = [FIN].[DESDOBRAMENTO]
+    [TGFCAB] AS [CAB]
+    INNER JOIN
+    [TGFFIN] AS [FIN]
+ON [CAB].[NUNOTA] = [FIN].[NUNOTA]
+    INNER JOIN
+    [TGFTIT] AS [TIT] ON [FIN].[CODTIPTIT] = [TIT].[CODTIPTIT]
+    INNER JOIN
+    [TGFTEF] AS [TEF] ON [TEF].[NUFIN] = [FIN].[NUFIN]
+    AND [TEF].[DESDOBRAMENTO] = [FIN].[DESDOBRAMENTO]
 WHERE
-    [CAB].[NUNOTA] IN (1, 2, 3);
+    [CAB].[NUNOTA] IN (1
+    , 2
+    , 3);
 
 ```
 
 > Nao é possivel realizar a mesma consulta usando o serviço `LoadRecord`.
-
 
 ### 11. **Captura de Empresas e Lojas**
 
@@ -586,8 +569,6 @@ WHERE "EMP"."CODEMPMATRIZ" = 5;
 
 ![integracao_01-b](./assets/integracao-01-b.png)
 
-
-
 ## Permissões para o usuário
 
 É necessário conceder permissões ao usuário criado na integração
@@ -599,7 +580,6 @@ Pesquise por `Acesso`, depois selecione o módulo `Movimentação Financeira`
 Selecione o usuário criado na integração, ex: `Netunna`, selecione as permissões e clique em `Finalizar`
 
 ![financeiro-permissoes.png](./assets/financeiro-permissoes.png)
-
 
 ## Serviço Baixa FinanceiroSP (Baixar Titulo)
 
