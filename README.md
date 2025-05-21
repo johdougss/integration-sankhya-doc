@@ -263,6 +263,8 @@ informações das bandeiras é `TGFTEF.BANDEIRA`.
 | MASTERCARD       | 2         |
 | VISA             | 1         |
 | ELECTRON         | 1         |
+| CABAL            | 9         |
+| BANESCARD        | 8         |
 
 Para mais detalhes sobre as bandeiras permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Bandeira).
