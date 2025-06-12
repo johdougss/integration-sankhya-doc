@@ -297,6 +297,7 @@ adquirente é `TGFTIT.FISCAL`.
 | PAGARME  | 39        |
 | REDE     | 18        |
 | REDECARD | 18        |
+| GETNET   | 12        |
 | STONE    | 24        |
 | SICREDI  | 42        |
 
