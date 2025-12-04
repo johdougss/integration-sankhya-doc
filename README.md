@@ -136,8 +136,8 @@ para configurar o Gateway.
 
 Ex:
 
-```dotenv
-SANKHYA_TOKEN=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+```text
+aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
 ```
 
 ![img_3.png](./assets/img_3.png)
@@ -238,8 +238,10 @@ vendas. Nesse caso, é importante configurar um filtro para garantir que apenas 
 Para isso, defina o identificador do tipo de operação de venda:
 Pode existir mais de um código.
 
-```dotenv
-SANKHYA_SALE_OPERATION_TYPE_ID=3200,3201,3202
+Ex:
+
+```text
+3200,3201,3202
 ```
 
 > Conhecido como TOP na Sankhya
@@ -255,16 +257,18 @@ informações das bandeiras é `TGFTEF.BANDEIRA`.
 |------------------|-----------|
 | AMERICAN EXPRESS | 3         |
 | AMEX             | 3         |
+| BANESCARD        | 8         |
+| CABAL            | 9         |
+| DINERS           | 5         |
+| ELECTRON         | 1         |
 | ELO              | 6         |
 | HIPER            | 4         |
 | HIPERCARD        | 4         |
 | MAESTRO          | 2         |
 | MASTER           | 2         |
 | MASTERCARD       | 2         |
+| PIX              | 63        |
 | VISA             | 1         |
-| ELECTRON         | 1         |
-| CABAL            | 9         |
-| BANESCARD        | 8         |
 
 Para mais detalhes sobre as bandeiras permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Bandeira).
@@ -291,24 +295,22 @@ BRAND_NAME_OPTION=2
 Abaixo está a descrição das adquirentes mapeadas e aceitas no Sankhya. No sistema Sankhya, a coluna que contém o nome da
 adquirente é `TGFTIT.FISCAL`.
 
-| Sankya   | Teia Card |  
-|----------|-----------|
-| CIELO    | 6         |
-| PAGARME  | 39        |
-| REDE     | 18        |
-| REDECARD | 18        |
-| GETNET   | 12        |
-| STONE    | 24        |
-| SICREDI  | 42        |
+| Sankya    | Teia Card |  
+|-----------|-----------|
+| CIELO     | 6         |
+| GETNET    | 12        |
+| PAGARME   | 39        |
+| PAGSEGURO | 38        |
+| REDE      | 18        |
+| REDECARD  | 18        |
+| SAFRAPAY  | 35        |
+| SICREDI   | 42        |
+| STONE     | 24        |
 
 Para mais detalhes sobre as adquirentes permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Adquirente).
 
 > Variações de maíusculo e minúsculo e acento das palavras são aceitas, Ex: `RedeCard`, `Cielo`
-
-```env
-ACQUIRER_NAME_OPTION=1
-```
 
 ### Opção 2:
 
@@ -325,10 +327,6 @@ SELECT
     ...
     JOIN TGFPAR AS PAR
 ON TGFTIT.CODPARCTEF = PAR.CODPARC
-```
-
-```env
-ACQUIRER_NAME_OPTION=2
 ```
 
 ### 7. **Meio de Captura**<a id="capture-method-list"></a>
@@ -392,18 +390,15 @@ oficial ou entre em contato com o suporte técnico.
 ### 9. **Banco de dados**
 
 Existem clientes da Sankhya que utilizam bancos de dados `Oracle` e `SQL Server`. Portanto, é fundamental especificar o
-tipo
-de banco de
-dados para garantir que as consultas SQL sejam elaboradas de acordo com as necessidades específicas de cada cliente
+tipo de banco de dados para garantir que as consultas SQL sejam elaboradas de acordo com as necessidades específicas de
+cada cliente.
 
 | Nome       | Código |
 |------------|--------|
 | SQL Server | sqlsrv |
 | Oracle     | ocl    |
 
-```dotenv
-SANKHYA_DB_CONNECTION=ocl
-```
+> Identificado automaticamente na homologação
 
 ### 10. **Captura das vendas**
 
@@ -672,11 +667,7 @@ data = {
 
 ![img.png](./assets/sankhya-baixa-01.png)
 
-Ex: `14`, `1500`, `4300`
-
-```dotenv
-SANKHYA_SETTLEMENT_OPERATION_TYPE_ID=4300
-```
+Ex: `4300`
 
 ### 2. **Atualização de Taxa Aministrativa**
 
@@ -736,29 +727,6 @@ Essa diferença será informada como `vlrJuros` quando o valor recebido for maio
 | 6       | 70,63   | 70,62     | 0,01      |
 | 7       | 70,63   | 70,62     | 0,01      |
 | 8       | 70,59   | 70,66     | 0,07      |
-
-### Exemplo
-
-```dotenv
-# Usuário Netunna
-SANKHYA_USERNAME=integracao.nnsankhya@netunna.com.br
-# Codigo de Baixa
-SANKHYA_SETTLEMENT_OPERATION_TYPE_ID=4300
-# Codigo de vendas (TOP)
-SANKHYA_SALE_OPERATION_TYPE_ID=3200,3201,3202
-# Banco de dados Sankhya
-SANKHYA_DB_CONNECTION=sqlsrv
-
-SANKHYA_DAYS_TOLERANCE=3
-SANKHYA_SALE_GROSS_VALUE_TOLERANCE=0.05
-SANKHYA_INSTALLMENT_GROSS_VALUE_TOLERANCE=0.11
-# Token Produção
-SANKHYA_TOKEN=db4axxxx-6ff9-41ac-a919-0c033a3aaa12
-# Token Homologação
-#SANKHYA_TOKEN=c72axxxx-f5dc-4485-a5a1-b7684exxxeae
-```
-
----
 
 # Dados com baixa qualidade
 
@@ -826,9 +794,7 @@ Número de dias para tolerância de data na conciliação:
 > Exemplo: Uma venda realizada em 01/10 foi registrada no Sankhya apenas em 02/10. Como a diferença é de apenas um dia e
 > está dentro da tolerância permitida, essa venda seria corretamente identificada.
 
-```dotenv
-SANKHYA_DAYS_TOLERANCE=3
-```
+Exemplo: `3`
 
 ### 2. **Tolerância de valor bruto da venda**
 
@@ -837,9 +803,7 @@ Margem de tolerância no valor bruto da venda.
 > Exemplo: Em uma venda de 21,34 registrada na Sankhya, a adquirente informou o valor de 21,36. Como essa diferença
 > está dentro da tolerância definida, a venda seria reconhecida e conciliada corretamente.
 
-```dotenv
-SANKHYA_SALE_GROSS_VALUE_TOLERANCE=0.05
-```
+Exemplo: `0.05` (5 centavos)
 
 ### 3. **Tolerância de valor bruto da parcela**
 
@@ -861,15 +825,4 @@ primeira parcela:
 | 7       | 70,63   | 70,62     | 0,01      |
 | 8       | 70,59   | 70,66     | 0,07      |
 
-```dotenv
-SANKHYA_INSTALLMENT_GROSS_VALUE_TOLERANCE=0.11
-```
-
-### Exemplo
-
-```dotenv
-SANKHYA_DAYS_TOLERANCE=3
-SANKHYA_SALE_GROSS_VALUE_TOLERANCE=0.05
-SANKHYA_INSTALLMENT_GROSS_VALUE_TOLERANCE=0.11
-```
-
+Exemplo: `0.11` (11 centavos)
