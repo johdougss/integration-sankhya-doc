@@ -270,6 +270,7 @@ informações das bandeiras é `TGFTEF.BANDEIRA`.
 | PIX              | 63        |
 | VISA             | 1         |
 
+
 Para mais detalhes sobre as bandeiras permitidas no Teia Card, consulte
 a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-Bandeira).
 
