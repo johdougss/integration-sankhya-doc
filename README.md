@@ -250,8 +250,7 @@ Ex:
 
 #### Opção 1:
 
-Abaixo está a descrição das bandeiras mapeadas e aceitas no Sankhya. No sistema Sankhya, a tabela que contém as
-informações das bandeiras é `TGFTEF.BANDEIRA`.
+Abaixo está a descrição das bandeiras mapeadas e aceitas no Sankhya. 
 
 | Sankhya          | Teia Card |
 |------------------|-----------|
@@ -277,24 +276,24 @@ a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-
 
 > Variações de maíusculo e minusculo e acento das palavras são aceitas, Ex: `Visa`, `MasterCard`
 
-```env
-BRAND_NAME_OPTION=1
+colunas em que podem ser encontradas as informações de bandeira, exemplo:
+```text
+TGFTIT.FISCAL
+TGFTEF.BANDEIRA
+TGFTEF.NOMEREDE
 ```
 
-#### Opção 2:
-
-Uma outra alternativa é recuperar o nome da bandeira da coluna `TGFTEF.NOMEREDE`.
-
-```env
-BRAND_NAME_OPTION=2
+ou campo adicional exemplo:
+```text
+TGFFIN.AD_BANDEIRA
 ```
+
 
 ### 6. **Adquirentes**<a id="acquire-list"></a>
 
 ### Opção 1:
 
-Abaixo está a descrição das adquirentes mapeadas e aceitas no Sankhya. No sistema Sankhya, a coluna que contém o nome da
-adquirente é `TGFTIT.FISCAL`.
+Abaixo está a descrição das adquirentes mapeadas e aceitas no Sankhya.
 
 | Sankya    | Teia Card |  
 |-----------|-----------|
@@ -313,15 +312,25 @@ a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-
 
 > Variações de maíusculo e minúsculo e acento das palavras são aceitas, Ex: `RedeCard`, `Cielo`
 
-### Opção 2:
 
-Uma alternativa é recuperar o nome da adquirente da coluna `TGFPAR.NOMEPARC`
+colunas em que podem ser encontradas as informações da adquirente, exemplo:
+```text
+TGFTIT.FISCAL
+TGFTEF.NOMEREDE
+TGFPAR.NOMEPARC
+```
+
+ou campo adicional exemplo:
+```text
+TGFFIN.AD_ADQUIRENTE
+```
+
+No caso de `TGFPAR.NOMEPARC` o relacionamento é criado com TGFPAR.
 
 Ex:
 
 ```sql 
 -- noinspection SqlNoDataSourceInspectionForFile
-
 SELECT
     ...
     PAR.NOMEPARC AS ACQUIRER_NAME
@@ -387,6 +396,7 @@ campo `TGFTIT.DESCRTIPTIT`. A interpretação segue as seguintes regras:
 Para mais detalhes sobre os tipos de serviço no Teia Card,
 consulte a [documentação da API](https://api.saferedi.nteia.com/api/documentation/#api-Enumerador-ServicoTipo)
 oficial ou entre em contato com o suporte técnico.
+
 
 ### 9. **Banco de dados**
 
@@ -461,51 +471,54 @@ where "CAB"."NUNOTA" in (68684)
 
 Exemplo de SQL (Sql Server):
 
-```sql
+```tsql
 -- noinspection SqlNoDataSourceInspectionForFile
 
 -- Consulta os pedidos
 SELECT TOP 2500 [TX].*
-FROM (
-    SELECT
-    [CAB].[NUNOTA] AS [ORDER_ID], [CAB].[NUMNOTA] AS [ORDER_NUMBER], [CAB].[DTNEG] AS [DATE], [CAB].[VLRNOTA] AS [GROSS_VALUE]
-    FROM
-    [TGFCAB] AS [CAB]
-    INNER JOIN
-    [TGFFIN] AS [FIN] ON [CAB].[NUNOTA] = [FIN].[NUNOTA]
-    INNER JOIN
-    [TGFTIT] AS [TIT] ON [FIN].[CODTIPTIT] = [TIT].[CODTIPTIT]
-    INNER JOIN
-    [TGFTEF] AS [TEF] ON [TEF].[NUFIN] = [FIN].[NUFIN]
-    AND [TEF].[DESDOBRAMENTO] = [FIN].[DESDOBRAMENTO]
-    WHERE
-    [CAB].[CODEMP] = 1
-    AND [CAB].[DTNEG] = '20250201'
-    AND [CAB].[CODTIPOPER] IN (
-    3200, 3201, 3202, 3203, 3206, 3208, 3209, 3220, 3230
-    )
-    GROUP BY
-    [CAB].[NUNOTA], [CAB].[NUMNOTA], [CAB].[DTNEG], [CAB].[VLRNOTA]
-    ) AS [TX];
+FROM (SELECT [CAB].[NUNOTA]  AS [ORDER_ID],
+             [CAB].[NUMNOTA] AS [ORDER_NUMBER],
+             [CAB].[DTNEG]   AS [DATE],
+             [CAB].[VLRNOTA] AS [GROSS_VALUE]
+      FROM [TGFCAB] AS [CAB]
+             INNER JOIN
+           [TGFFIN] AS [FIN] ON [CAB].[NUNOTA] = [FIN].[NUNOTA]
+             INNER JOIN
+           [TGFTIT] AS [TIT] ON [FIN].[CODTIPTIT] = [TIT].[CODTIPTIT]
+             INNER JOIN
+           [TGFTEF] AS [TEF] ON [TEF].[NUFIN] = [FIN].[NUFIN]
+             AND [TEF].[DESDOBRAMENTO] = [FIN].[DESDOBRAMENTO]
+      WHERE [CAB].[CODEMP] = 1
+        AND [CAB].[DTNEG] = '20250201'
+        AND [CAB].[CODTIPOPER] IN (
+                                   3200, 3201, 3202, 3203, 3206, 3208, 3209, 3220, 3230
+        )
+      GROUP BY [CAB].[NUNOTA], [CAB].[NUMNOTA], [CAB].[DTNEG], [CAB].[VLRNOTA]) AS [TX];
 
 -- Recupera os títulos financeiros dos pedidos e agrupa por formas de pagamento, formando as vendas e suas parcelas
-SELECT
-    [TEF].[BANDEIRA] AS [BRAND_NAME], [TIT].[FISCAL] AS [ACQUIRER_NAME], [CAB].[NUNOTA] AS [ORDER_ID], [TEF].[NUMNSU] AS [NSU], [TEF].[AUTORIZACAO] AS [AUTHORIZATION_CODE], [TEF].[NUFIN] AS [INSTALLMENT_ID], [TEF].[VLRTRANSACAO] AS [GROSS_VALUE], [TIT].[CODTIPTIT] AS [PAYMENT_METHOD_ID], [TIT].[DESCRTIPTIT] AS [PAYMENT_METHOD_NAME], [TIT].[SUBTIPOVENDA] AS [PAYMENT_METHOD_TYPE], [FIN].[CODPARC] AS [PARTNER_ID], [FIN].[DESDOBRAMENTO] AS [UNFOLDING], [FIN].[DTVENC] AS [PAYMENT_FORECAST], [FIN].[CARTAODESC] AS [COMMISSION_VALUE]
-FROM
-    [TGFCAB] AS [CAB]
-    INNER JOIN
-    [TGFFIN] AS [FIN]
-ON [CAB].[NUNOTA] = [FIN].[NUNOTA]
-    INNER JOIN
-    [TGFTIT] AS [TIT] ON [FIN].[CODTIPTIT] = [TIT].[CODTIPTIT]
-    INNER JOIN
-    [TGFTEF] AS [TEF] ON [TEF].[NUFIN] = [FIN].[NUFIN]
-    AND [TEF].[DESDOBRAMENTO] = [FIN].[DESDOBRAMENTO]
-WHERE
-    [CAB].[NUNOTA] IN (1
-    , 2
-    , 3);
-
+SELECT [TEF].[BANDEIRA]      AS [BRAND_NAME],
+       [TIT].[FISCAL]        AS [ACQUIRER_NAME],
+       [CAB].[NUNOTA]        AS [ORDER_ID],
+       [TEF].[NUMNSU]        AS [NSU],
+       [TEF].[AUTORIZACAO]   AS [AUTHORIZATION_CODE],
+       [TEF].[NUFIN]         AS [INSTALLMENT_ID],
+       [TEF].[VLRTRANSACAO]  AS [GROSS_VALUE],
+       [TIT].[CODTIPTIT]     AS [PAYMENT_METHOD_ID],
+       [TIT].[DESCRTIPTIT]   AS [PAYMENT_METHOD_NAME],
+       [TIT].[SUBTIPOVENDA]  AS [PAYMENT_METHOD_TYPE],
+       [FIN].[CODPARC]       AS [PARTNER_ID],
+       [FIN].[DESDOBRAMENTO] AS [UNFOLDING],
+       [FIN].[DTVENC]        AS [PAYMENT_FORECAST],
+       [FIN].[CARTAODESC]    AS [COMMISSION_VALUE]
+FROM [TGFCAB] AS [CAB]
+       INNER JOIN
+     [TGFFIN] AS [FIN] ON [CAB].[NUNOTA] = [FIN].[NUNOTA]
+       INNER JOIN
+     [TGFTIT] AS [TIT] ON [FIN].[CODTIPTIT] = [TIT].[CODTIPTIT]
+       INNER JOIN
+     [TGFTEF] AS [TEF] ON [TEF].[NUFIN] = [FIN].[NUFIN]
+       AND [TEF].[DESDOBRAMENTO] = [FIN].[DESDOBRAMENTO]
+WHERE [CAB].[NUNOTA] IN (1, 2, 3);
 ```
 
 > Nao é possivel realizar a mesma consulta usando o serviço `LoadRecord`.
